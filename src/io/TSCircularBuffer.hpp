@@ -11,6 +11,7 @@
 
 template <class T>
 class circular_buffer {
+		
 public:
 	circular_buffer(size_t size) :
 		buf_(std::unique_ptr<T[]>(new T[size])),
@@ -32,6 +33,15 @@ public:
 		}
 	}
 
+	T get(size_t index)
+	{
+		if (index > size_)
+		{
+			return T();
+		}
+		return buf_[index];
+	}
+	
 	T get(void)
 	{
 		std::lock_guard<std::mutex> lock(mutex_);
@@ -70,6 +80,9 @@ public:
 	{
 		return size_ - 1;
 	}
+
+
+	T& operator[](std::size_t idx) { return buf_[idx]; }
 
 private:
 	std::mutex mutex_;

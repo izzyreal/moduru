@@ -4,6 +4,8 @@
 #include <cstring>
 #endif
 
+#include <sstream>
+
 using namespace moduru::lang;
 using namespace std;
 
@@ -162,4 +164,14 @@ int StrUtil::cntByte(unsigned char cChar)
 	}
 
 	return iByte;
+}
+
+vector<string> StrUtil::split(const string& s, char c) {
+	stringstream ss = stringstream(s);
+	std::string segment;
+	std::vector<std::string> seglist;
+
+	while (std::getline(ss, segment, c))
+		seglist.push_back(segment);
+	return seglist;
 }
