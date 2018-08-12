@@ -18,6 +18,16 @@ void CircularTBuffer::read(std::vector<float>* dest, int srcOffset, int length) 
 	readPos = oldReadPos;
 }
 
+void encodeMidSide(const float& l, const float& r, float& m, float& s) {
+	m = 0.5f * (l + r);
+	s = 0.5f * (l - r);
+}
+
+void decodeMidSide(float& l, float& r, const float& m, const float& s) {
+	l = m + s;
+	r = m - s;
+}
+
 void CircularTBuffer::multiply(int relativePos, float factor) {
 	if (readPos + relativePos >= data.size()) readPos -= data.size();
 	while ((readPos + relativePos) < 0) readPos += data.size();
