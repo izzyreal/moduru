@@ -16,6 +16,7 @@ namespace moduru {
 		public:
 			void read(std::vector<float>* destL, std::vector<float>* destR, int srcOffset, int length);
 			void write(std::vector<float>* srcL, std::vector<float>* srcR);
+			void write(std::vector<float>* srcL, std::vector<float>* srcR, int length);
 			void moveReadPos(int amount);
 			void multiply(int relativePos, float factor, bool left);
 			void encodeMidSide(int relativePos);
