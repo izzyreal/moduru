@@ -13,7 +13,7 @@ StereoCircularTBuffer::StereoCircularTBuffer(int size) {
 void StereoCircularTBuffer::read(vector<float>* destL, vector<float>* destR, int srcOffset, int length) {
 	auto oldReadPos = readPos;
 	for (int i = 0; i < length; i++) {
-		while (readPos + srcOffset >= dataL.size()) readPos -= dataL.size();
+		if (readPos + srcOffset >= dataL.size()) readPos -= dataL.size();
 		while ((readPos + srcOffset) < 0) readPos += dataL.size();
 		(*destL)[i] = dataL[readPos + srcOffset];
 		(*destR)[i] = dataR[readPos + srcOffset];
