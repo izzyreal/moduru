@@ -51,9 +51,11 @@ class MidiFile {
 
 		// reading/writing functions:
 		bool           read                        (const std::string& filename);
+		void           readFromArray(std::vector<char>& vec);
 		bool           read                        (std::istream& instream);
 		bool           write                       (const std::string& filename);
 		bool           write                       (std::ostream& out);
+		void           writeToArray					(std::vector<char>& vecz);
 		bool           writeHex                    (const std::string& filename,
 		                                            int width = 25);
 		bool           writeHex                    (std::ostream& out,
