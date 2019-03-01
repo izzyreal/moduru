@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-
-#include <boost/any.hpp>
+#include <any>
 
 namespace moduru {
 
@@ -15,7 +14,7 @@ namespace moduru {
 
 		public:
 			virtual void notifyObservers();
-			virtual void notifyObservers(boost::any a);
+			virtual void notifyObservers(std::any a);
 			void setChanged();
 			void addObserver(moduru::observer::Observer* o);
 			void deleteObservers();

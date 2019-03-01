@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-
-#include <boost/any.hpp>
+#include <any>
 
 namespace moduru {
 
@@ -13,7 +12,7 @@ namespace moduru {
 
 		public:
 			virtual void update(std::string s) {}
-			virtual void update(Observable* obs, boost::any arg) {}
+			virtual void update(Observable* obs, std::any arg) {}
 
 		public:
 			virtual ~Observer() {}

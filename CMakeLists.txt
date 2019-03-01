@@ -4,11 +4,6 @@ cmake_minimum_required(VERSION 2.8)
 project(moduru)
 
 set(_src_root_path "${CMAKE_CURRENT_SOURCE_DIR}/src")
-
-find_package(Boost 1.36.0)
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-endif()
   
 include_directories( ${_src_root_path} )
 
@@ -23,7 +18,7 @@ file(
 
 if(APPLE)
   set(CMAKE_OSX_ARCHITECTURES "x86_64")
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif(APPLE)
 
 

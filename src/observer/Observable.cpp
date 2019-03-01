@@ -6,7 +6,6 @@ using namespace moduru::observer;
 using namespace std;
 
 Observable::Observable() {
-	changed = true;
 }
 
 void Observable::setChanged() {
@@ -21,7 +20,7 @@ void Observable::notifyObservers() {
 	notifyObservers(nullptr);
 }
 
-void Observable::notifyObservers(boost::any arg) {
+void Observable::notifyObservers(std::any arg) {
 	for (auto& a : observers)
 		a->update(this, arg);
 }
