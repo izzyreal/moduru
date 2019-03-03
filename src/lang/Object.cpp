@@ -2,9 +2,9 @@
 
 //#include <lang/Class.hpp>
 //#include <lang/IllegalArgumentException.hpp>
-#include <lang/Integer.hpp>
+//#include <lang/Integer.hpp>
 //#include <lang/NullPointerException.hpp>
-#include <lang/String.hpp>
+//#include <lang/String.hpp>
 #include <lang/StringBuilder.hpp>
 
 #ifdef __linux__
