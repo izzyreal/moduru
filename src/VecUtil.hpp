@@ -5,8 +5,6 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include <lang/Object.hpp>
-
 namespace moduru {
 
 	class VecUtil {
@@ -26,20 +24,7 @@ namespace moduru {
 			for (int i = 0; i < length; i++)
 				(*dest)[i + destPos] = (*src)[i + srcPos];
 		}
-		/*
-		static void VecCopy(std::vector<unsigned char>* src, int srcPos, std::vector<unsigned char>* dest, int destPos, int length);
-		static void VecCopy(std::vector<char>* src, int srcPos, std::vector<char>* dest, int destPos, int length);
-		static void VecCopy(std::vector<char16_t>* src, int srcPos, std::vector<char16_t>* dest, int destPos, int length);
-		static void VecCopy(std::vector<int>* src, int srcPos, std::vector<int>* dest, int destPos, int length);
-		static void VecCopy(std::vector<int8_t>* src, int srcPos, std::vector<int8_t>* dest, int destPos, int length);
-		static void VecCopy(std::vector<int16_t>* src, int srcPos, std::vector<int16_t>* dest, int destPos, int length);
-		static void VecCopy(std::vector<int64_t>* src, int srcPos, std::vector<int64_t>* dest, int destPos, int length);
-		static void VecCopy(std::vector<float>* src, int srcPos, std::vector<float>* dest, int destPos, int length);
-		static void VecCopy(std::vector<double>* src, int srcPos, std::vector<double>* dest, int destPos, int length);
-		static void VecCopy(std::vector<bool>* src, int srcPos, std::vector<bool>* dest, int destPos, int length);
-		*/
 
-		//static void VecCopy(std::vector<moduru::lang::Object*>* src, int64_t srcPos, std::vector<moduru::lang::Object*>* dest, uint64_t destPos, uint64_t length);
 		static std::vector<int8_t> CopyOf(std::vector<int8_t> src, int newLength);
 		static std::vector<int> CopyOf(std::vector<int> src, int newLength);
 
