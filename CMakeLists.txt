@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
-#include (../wdl-ol/cmake/IPlugMacros.inc)
 
 project(moduru)
+set(CMAKE_CXX_STANDARD 17)
 
 set(_src_root_path "${CMAKE_CURRENT_SOURCE_DIR}/src")
   
@@ -18,7 +18,6 @@ file(
 
 if(APPLE)
   set(CMAKE_OSX_ARCHITECTURES "x86_64")
-  set(CMAKE_CXX_STANDARD 17)
 endif(APPLE)
 
 
@@ -28,7 +27,6 @@ endif()
 
 if (LINUX)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
