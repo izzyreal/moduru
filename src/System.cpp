@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include <cxxabi.h>
+//#include <cxxabi.h>
 
 using namespace std;
 using namespace moduru;
@@ -18,6 +18,7 @@ string System::demangle(const std::string& typeIdName) {
 	auto i = copy.find(toDelete);
 	if (i != string::npos) copy.erase(i, toDelete.size());
     int status = 0;
-    char* demangled = abi::__cxa_demangle(typeIdName.c_str(), 0, 0, &status);
-    return string(demangled);
+    //char* demangled = abi::__cxa_demangle(typeIdName.c_str(), 0, 0, &status);
+    //return string(demangled);
+	return typeIdName;
 }
