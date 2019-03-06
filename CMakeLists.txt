@@ -14,6 +14,7 @@ file(
     "${_src_root_path}/*.c*"
     "${_src_root_path}/*.cpp*"
     "${_src_root_path}/*.hpp*"
+	"${_src_root_path}/*.hxx*"
 )
 
 if(APPLE)
