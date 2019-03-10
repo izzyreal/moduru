@@ -10,8 +10,8 @@ CircularTBuffer::CircularTBuffer(int size) {
 void CircularTBuffer::read(std::vector<float>* dest, int srcOffset, int length) {
 	auto oldReadPos = readPos;
 	for (int i = 0; i < length; i++) {
-		if (readPos + srcOffset >= data.size()) readPos -= data.size();
-		while ((readPos + srcOffset) < 0) readPos += data.size();
+		if (readPos + srcOffset >= data.size()) readPos -= static_cast<int>(data.size());
+		while ((readPos + srcOffset) < 0) readPos += static_cast<int>(data.size());
 		(*dest)[i] = data[readPos + srcOffset];
 		readPos++;
 	}
@@ -29,8 +29,8 @@ void decodeMidSide(float& l, float& r, const float& m, const float& s) {
 }
 
 void CircularTBuffer::multiply(int relativePos, float factor) {
-	if (readPos + relativePos >= data.size()) readPos -= data.size();
-	while ((readPos + relativePos) < 0) readPos += data.size();
+	if (readPos + relativePos >= data.size()) readPos -= static_cast<int>(data.size());
+	while ((readPos + relativePos) < 0) readPos += static_cast<int>(data.size());
 	data[readPos + relativePos] *= factor;
 }
 

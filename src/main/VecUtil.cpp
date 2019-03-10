@@ -49,7 +49,7 @@ vector<int> VecUtil::CopyOf(vector<int> src, int newLength) {
 		src.push_back(0);
 	}
 	vector<int> res(newLength);
-	int elementsToCopy = newLength < src.size() ? newLength : src.size();
+	int elementsToCopy = newLength < static_cast<int>(src.size() ? newLength : src.size());
 	for (int i = 0; i < elementsToCopy; i++) {
 		if (i == src.size()) break;
 		res[i] = src[i];

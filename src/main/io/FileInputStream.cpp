@@ -50,7 +50,7 @@ char FileInputStream::read()
 
 int FileInputStream::read(vector<char>* b)
 { 
-	return readBytes(b, 0, b->size());
+	return readBytes(b, 0, static_cast<int>(b->size()));
 }
 
 int FileInputStream::readBytes(vector<char>* b, int off, int len) {

@@ -143,8 +143,8 @@ std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) 
 	std::vector<std::vector<bool>> result;
 
 	const int infosize = 54;
-
-	FILE* f = fopen(filePath.c_str(), "rb");
+	FILE* f;
+	fopen_s(&f, filePath.c_str(), "rb");
 
     if (f == nullptr) return result;
 

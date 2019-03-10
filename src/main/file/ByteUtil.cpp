@@ -84,7 +84,7 @@ char ByteUtil::hexToByte(string charPair)
 vector<char> ByteUtil::hexToBytes(string charPairs)
 {
 	vector<char> res;
-	for (int i = 0; i < charPairs.size(); i += 2) {
+	for (size_t i = 0; i < charPairs.size(); i += 2) {
 		string current;
 		current.push_back(charPairs[i]);
 		current.push_back(charPairs[i + 1]);

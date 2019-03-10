@@ -94,10 +94,10 @@ ShortName* ShortNameGenerator::generateShortName(string longFullName)
 	}
 	string shortExt = (longExt.length() > 3) ? longExt.substr(0, 3) : longExt;
 	if (forceSuffix || (longName.length() > 8) || usedNames.find(StrUtil::toLower(ShortName(longName, shortExt).asSimpleString())) != usedNames.end()) {
-		auto const maxLongIdx = longName.length() < 8 ? longName.length() : 8;
+		auto const maxLongIdx = static_cast<int>(longName.length() < 8 ? longName.length() : 8);
 		for (int i = 1; i < 99999; i++) {
 			string serial = "~" + to_string(i);
-			int serialLen = serial.length();
+			int serialLen = static_cast<int>(serial.length());
 			int trimIndex = maxLongIdx < 8 - serialLen ? maxLongIdx : 8 - serialLen;
 			auto const shortName = longName.substr(0, trimIndex) + serial;
 			auto const result = new ShortName(shortName, shortExt);

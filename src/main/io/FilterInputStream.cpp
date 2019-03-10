@@ -35,7 +35,7 @@ char FilterInputStream::read()
 
 int FilterInputStream::read(vector<char>* b)
 { 
-    return read(b, 0, b->size());
+    return read(b, 0, static_cast<int>(b->size()));
 }
 
 int FilterInputStream::read(vector<char>* b, int off, int len)

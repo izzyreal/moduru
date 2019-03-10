@@ -8,7 +8,7 @@ using namespace moduru::io;
 using namespace std;
 
 void OutputStream::write(vector<char> b) {
-	write(b, 0, b.size());
+	write(b, 0, static_cast<int>(b.size()));
 }
 
 void OutputStream::write(vector<char> b, int off, int len) {

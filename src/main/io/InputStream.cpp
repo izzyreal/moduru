@@ -8,11 +8,11 @@ using namespace moduru::io;
 using namespace std;
 
 int InputStream::read(vector<char>* b) {
-	return read(b, 0, b->size());
+	return read(b, 0, static_cast<int>(b->size()));
 }
 
 int InputStream::read(vector<char>* b, int off, int len) {
-	if (off < 0 || len < 0 || len >(int) (b->size()) - off) {
+	if (off < 0 || len < 0 || len > static_cast<int>(b->size()) - off) {
 		throw std::invalid_argument("InputStream::read index out of bounds!\n");
 	}
 	else if (len == 0) {

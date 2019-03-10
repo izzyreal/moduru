@@ -61,7 +61,7 @@ int CircularBuffer::getWritePos()
 
 int CircularBuffer::read(vector<char>* abData)
 {
-	return read(abData, 0, abData->size());
+	return read(abData, 0, static_cast<int>(abData->size()));
 }
 
 
@@ -120,7 +120,7 @@ int CircularBuffer::read(vector<char>* abData, int nOffset, int nLength)
 
 int CircularBuffer::write(vector<char> abData)
 {
-	return write(abData, 0, abData.size());
+	return write(abData, 0, static_cast<int>(abData.size()));
 }
 
 

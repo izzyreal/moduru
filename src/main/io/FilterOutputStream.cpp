@@ -29,7 +29,7 @@ void FilterOutputStream::write(char b)
 
 void FilterOutputStream::write(vector<char> b)
 {
-	write(b, 0, b.size());
+	write(b, 0, static_cast<int>(b.size()));
 }
 
 void FilterOutputStream::write(vector<char> b, int off, int len)

@@ -28,7 +28,7 @@ FileOutputStream::FileOutputStream(moduru::file::File* file, bool append)
 }
 
 void FileOutputStream::write(vector<char> b) {
-	writeBytes(b, 0, b.size());
+	writeBytes(b, 0, static_cast<int>(b.size()));
 }
 
 void FileOutputStream::write(vector<char> b, int off, int len) {

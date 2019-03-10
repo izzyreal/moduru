@@ -56,7 +56,7 @@ string StrUtil::padLeft(string str, string pad, int size) {
 		result.append(pad);
 	}
 	int counter = 0;
-	for (int i = size - str.size(); i < size; i++) {
+	for (int i = size - static_cast<int>(str.size()); i < size; i++) {
 		result.append(str.substr(counter++, 1));
 	}
 	return result;
@@ -67,7 +67,7 @@ string StrUtil::padRight(string str, string pad, int size) {
 	for (int i = 0; i < str.size(); i++) {
 		result.append(str.substr(i, 1));
 	}
-	for (int i = str.size(); i < size; i++) {
+	for (int i = static_cast<int>(str.size()); i < size; i++) {
 		result.append(pad);
 	}
 	return result;
@@ -94,8 +94,8 @@ string StrUtil::TrimDecimals(string str, int count) {
 		return str;
 	}
 	if (f != NULL) {
-		int index = str.find(".");
-		int counted = (int) (str.length()) - index + 1;
+		int index = static_cast<int>(str.find("."));
+		int counted = static_cast<int>(str.length()) - index + 1;
 		if (counted <= count) return str; // no trimming possible
 		copy = copy.substr(0, index + 1 + count - 0);
 		return copy;

@@ -13,8 +13,8 @@ StereoCircularTBuffer::StereoCircularTBuffer(int size) {
 void StereoCircularTBuffer::read(vector<float>* destL, vector<float>* destR, int srcOffset, int length) {
 	auto oldReadPos = readPos;
 	for (int i = 0; i < length; i++) {
-		if (readPos + srcOffset >= dataL.size()) readPos -= dataL.size();
-		while ((readPos + srcOffset) < 0) readPos += dataL.size();
+		if (readPos + srcOffset >= dataL.size()) readPos -= static_cast<int>(dataL.size());
+		while ((readPos + srcOffset) < 0) readPos += static_cast<int>(dataL.size());
 		(*destL)[i] = dataL[readPos + srcOffset];
 		(*destR)[i] = dataR[readPos + srcOffset];
 		readPos++;
@@ -34,14 +34,14 @@ void decodeMidSide1(float& l, float& r, const float& m, const float& s) {
 
 void StereoCircularTBuffer::multiply(int relativePos, float factor, bool left) {
 	vector<float>* data = left ? &dataL : &dataR;
-	if (readPos + relativePos >= data->size()) readPos -= data->size();
-	while ((readPos + relativePos) < 0) readPos += data->size();
+	if (readPos + relativePos >= data->size()) readPos -= static_cast<int>(data->size());
+	while ((readPos + relativePos) < 0) readPos += static_cast<int>(data->size());
 	(*data)[readPos + relativePos] *= factor;
 }
 
 void StereoCircularTBuffer::encodeMidSide(int relativePos) {
-	if (readPos + relativePos >= dataL.size()) readPos -= dataL.size();
-	while ((readPos + relativePos) < 0) readPos += dataL.size();
+	if (readPos + relativePos >= dataL.size()) readPos -= static_cast<int>(dataL.size());
+	while ((readPos + relativePos) < 0) readPos += static_cast<int>(dataL.size());
 	const auto l = dataL[readPos + relativePos];
 	const auto r = dataR[readPos + relativePos];
 	float m, s;
@@ -51,8 +51,8 @@ void StereoCircularTBuffer::encodeMidSide(int relativePos) {
 }
 
 void StereoCircularTBuffer::decodeMidSide(int relativePos) {
-	if (readPos + relativePos >= dataL.size()) readPos -= dataL.size();
-	while ((readPos + relativePos) < 0) readPos += dataL.size();
+	if (readPos + relativePos >= dataL.size()) readPos -= static_cast<int>(dataL.size());
+	while ((readPos + relativePos) < 0) readPos += static_cast<int>(dataL.size());
 	const auto m = dataL[readPos + relativePos];
 	const auto s = dataR[readPos + relativePos];
 	float l, r;
@@ -63,8 +63,8 @@ void StereoCircularTBuffer::decodeMidSide(int relativePos) {
 
 void StereoCircularTBuffer::moveReadPos(int amount) {
 	readPos += amount;
-	if (readPos >= dataL.size()) readPos -= dataL.size();
-	while ((readPos) < 0) readPos += dataL.size();
+	if (readPos >= dataL.size()) readPos -= static_cast<int>(dataL.size());
+	while ((readPos) < 0) readPos += static_cast<int>(dataL.size());
 }
 
 void StereoCircularTBuffer::write(vector<float>* srcL, vector<float>* srcR, int length) {
@@ -78,7 +78,7 @@ void StereoCircularTBuffer::write(vector<float>* srcL, vector<float>* srcR, int 
 }
 
 void StereoCircularTBuffer::write(vector<float>* srcL, vector<float>* srcR) {
-	write(srcL, srcR, srcL->size());
+	write(srcL, srcR, static_cast<int>(srcL->size()));
 }
 
 StereoCircularTBuffer::~StereoCircularTBuffer() {

@@ -1,6 +1,7 @@
 #include <io/CircularIntBuffer.hpp>
 
 #include <math/Math.hpp> 
+#include <stdio.h>
 
 #include <VecUtil.hpp>
 
@@ -59,7 +60,7 @@ int CircularIntBuffer::getWritePos()
 
 int CircularIntBuffer::read(vector<int>* abData)
 {
-	return read(abData, 0, abData->size());
+	return read(abData, 0, static_cast<int>(abData->size()));
 }
 
 
@@ -93,9 +94,10 @@ int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
 					std::unique_lock<std::mutex> lck(Mutex);
 					cv.wait(lck);
 				}
-				catch (exception* e)
+				catch (const exception& e)
 				{
-					//string msg = e->what();
+					printf("failure in CircularIntbuffer\n");
+					printf(e.what());
 				}
 			}
 			int	nAvailable = Math::min(availableRead(), nRemainingBytes);
@@ -117,7 +119,7 @@ int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
 
 int CircularIntBuffer::write(vector<int> abData)
 {
-	return write(abData, 0, abData.size());
+	return write(abData, 0, static_cast<int>(abData.size()));
 }
 
 
@@ -140,9 +142,10 @@ int CircularIntBuffer::write(vector<int> abData, int nOffset, int nLength)
 					std::unique_lock<std::mutex> lck(Mutex);
 					cv.wait(lck);
 				}
-				catch (exception* e)
+				catch (const exception& e)
 				{
-					//string msg = e->what();
+					printf("failure in CircularIntbuffer\n");
+					printf(e.what());
 				}
 			}
 			int	nAvailable = Math::min(availableWrite(), nRemainingBytes);

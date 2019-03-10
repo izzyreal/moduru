@@ -12,7 +12,7 @@ ByteArrayInputStream::ByteArrayInputStream(vector<char>* buf)
 {
 	this->buf = buf;
 	this->pos = 0;
-	this->count = buf->size();
+	this->count = static_cast<int>(buf->size());
 }
 
 ByteArrayInputStream::ByteArrayInputStream(vector<char>* buf, int offset, int length)
@@ -20,7 +20,7 @@ ByteArrayInputStream::ByteArrayInputStream(vector<char>* buf, int offset, int le
 	this->buf = buf;
 	this->pos = offset;
 	int v1 = offset + length;
-	int v2 = buf->size();
+	int v2 = static_cast<int>(buf->size());
 	this->count = v1 < v2 ? v1 : v2;
 	this->mark_ = offset;
 }
