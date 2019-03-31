@@ -1,5 +1,6 @@
 #include "BMFParser.hpp"
 
+#include <file/File.hpp>
 #include <file/FileUtil.hpp>
 
 #include <stdio.h>
@@ -8,10 +9,11 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <Logger.hpp>
+
+using namespace moduru;
 using namespace moduru::gui;
 using namespace std;
-
-#include <Logger.hpp>
 
 BMFParser::BMFParser(string fontPath) {
 
@@ -26,7 +28,7 @@ BMFParser::BMFParser(string fontPath) {
 
 	string bmpFileName = loadedFont.pages[0].name;
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
-	string fontDir = fontPath.substr(0, moduru::file::FileUtil::GetLastSeparator(fontPath));
+	string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
 	atlas = BMPAsBoolArrays(fontDir + bmpFileName);
 }
 
@@ -140,39 +142,32 @@ bool BMFParser::GetBMFontData(const char* pBinary, size_t fileSize, bmfont* pBMF
 
 std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
 
-	std::vector<std::vector<bool>> result;
-
 	const int infosize = 54;
-	FILE* f;
-	fopen_s(&f, filePath.c_str(), "rb");
+	file::File f(filePath, nullptr);
 
-    if (f == nullptr) return result;
+	if (!f.exists()) return {};
+	vector<char> data;
+	auto success = f.getData(&data);
 
-	unsigned char info[infosize];
-	fread(info, sizeof(unsigned char), infosize, f); // read the 54-byte header
+	if (!success) return {};
 
-	std::vector<unsigned char> buf = { info[10], info[11], info[12], info[13] };
+	vector<char> buf = { data[10], data[11], data[12], data[13] };
 	uint32_t n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 	int imageDataOffset = (int)n;
 
-	buf = { info[18], info[19], info[20], info[21] };
+	buf = { data[18], data[19], data[20], data[21] };
 	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 	int width = n;
 
-	buf = { info[22], info[23], info[24], info[25] };
+	buf = { data[22], data[23], data[24], data[25] };
 	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 	int height = n;
 	int imageSize = width*height;
 
-	result = std::vector < std::vector <bool>>(width, std::vector<bool>(height));
+	auto result = std::vector<std::vector<bool>>(width, std::vector<bool>(height));
 
-	fseek(f, imageDataOffset, 0);
-
-	//unsigned char* tempdata = new unsigned char[imageSize / 8]; // allocate 1 byte per 8 pixels
-	vector<unsigned char> tempdata(imageSize / 8);
-	fread(&tempdata[0], sizeof(unsigned char), imageSize, f); // read the rest of the data at once
-	fclose(f);
-
+	vector<char> imageData(data.begin() + infosize, data.end());
+	
 	int xcounter = 0;
 	int ycounter = 0;
 
@@ -180,12 +175,9 @@ std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) 
 	int bitcounter = 7;
 	int charcounter = 0;
 
-	// tot hier geen prob
-
 	while (pixelcounter < imageSize) {
 		if (bitcounter < 0) {
 			bitcounter = 7;
-			//++tempdata;
 			charcounter++;
 		}
 		if (xcounter >= width) {
@@ -193,14 +185,12 @@ std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) 
 			ycounter++;
 		}
 
-		if ((tempdata.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
+		if ((imageData.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
 
 		bitcounter--;
 		xcounter++;
 		pixelcounter++;
 	}
-	//tempdata -= charcounter;
-	//free(tempdata); // this fucker crashes UE4!!!
 	return result;
 }
 

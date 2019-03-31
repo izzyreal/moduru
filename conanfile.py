@@ -6,6 +6,7 @@ class Pkg(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "src/*"
+    url = "https://github.com/izzyreal/moduru.git"
 
     def build(self):
         cmake = CMake(self)
