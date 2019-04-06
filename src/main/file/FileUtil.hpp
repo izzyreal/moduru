@@ -20,7 +20,7 @@ namespace moduru {
             // Returns path separator used by the OS
             static std::string getSeparator();
             
-            // Joins names, welded using path separator
+            // Joins names with a path separator
             template<typename ... String_Types, typename Separator>
             static std::string join_with_separator(Separator separator, String_Types ... strings)
             {
