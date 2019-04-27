@@ -140,6 +140,8 @@ bool BMFParser::GetBMFontData(const char* pBinary, size_t fileSize, bmfont* pBMF
 	return true;
 }
 
+/*
+// We want to avoid fopen, so here we rely on moduru's file system
 std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
 
 	const int infosize = 54;
@@ -186,6 +188,67 @@ std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) 
 		}
 
 		if ((imageData.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
+
+		bitcounter--;
+		xcounter++;
+		pixelcounter++;
+	}
+	return result;
+}
+*/
+
+std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
+
+	std::vector<std::vector<bool>> result;
+
+	const int infosize = 54;
+
+	FILE* f = fopen(filePath.c_str(), "rb");
+
+	if (f == nullptr) return result;
+
+	unsigned char info[infosize];
+	fread(info, sizeof(unsigned char), infosize, f);
+
+	std::vector<unsigned char> buf = { info[10], info[11], info[12], info[13] };
+	uint32_t n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+	int imageDataOffset = (int)n;
+
+	buf = { info[18], info[19], info[20], info[21] };
+	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+	int width = n;
+
+	buf = { info[22], info[23], info[24], info[25] };
+	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+	int height = n;
+	int imageSize = width * height;
+
+	result = std::vector < std::vector <bool>>(width, std::vector<bool>(height));
+
+	fseek(f, imageDataOffset, 0);
+
+	vector<unsigned char> tempdata(imageSize / 8);
+	fread(&tempdata[0], sizeof(unsigned char), imageSize, f);
+	fclose(f);
+
+	int xcounter = 0;
+	int ycounter = 0;
+
+	int pixelcounter = 0;
+	int bitcounter = 7;
+	int charcounter = 0;
+
+	while (pixelcounter < imageSize) {
+		if (bitcounter < 0) {
+			bitcounter = 7;
+			charcounter++;
+		}
+		if (xcounter >= width) {
+			xcounter = 0;
+			ycounter++;
+		}
+
+		if ((tempdata.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
 
 		bitcounter--;
 		xcounter++;
