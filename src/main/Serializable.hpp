@@ -12,7 +12,7 @@ using namespace rapidjson;
 using namespace std;
 
 namespace moduru {
-    
+
     class Serializable {
         
     public:
