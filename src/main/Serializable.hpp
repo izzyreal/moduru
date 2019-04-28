@@ -8,6 +8,8 @@
 #include <optional>
 #include <vector>
 
+#include "SerializationException.hpp"
+
 using namespace rapidjson;
 using namespace std;
 

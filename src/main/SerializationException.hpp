@@ -10,13 +10,17 @@ using namespace std;
 class SerializationException : public exception
 {
 public:
-	SerializationException(const string& _key, const string& _value) : key(_key), value(_value) {}
+	SerializationException(const string& key, const string& value) {
+		msg = "An error occurred while serializing key '" + key + "' and value '" + value + "'";
+	}
 
 private:
-	const string key, value;
+	string msg;
 
 public:
-	virtual char const * what() const { return ("An error occurred while serializing key '%s' and value '%s'.", key, value).c_str(); }
+	const char* what() const throw () override {
+		return msg.c_str();
+	}
 };
 
 #endif

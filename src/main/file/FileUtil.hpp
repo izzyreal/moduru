@@ -21,20 +21,21 @@ namespace moduru {
             static std::string getSeparator();
             
             // Joins names with a path separator
-            template<typename ... String_Types, typename Separator>
-            static std::string join_with_separator(Separator separator, String_Types ... strings)
+            template<typename ... String_Types>
+            static std::string join_with_separator(String_Types ... strings)
             {
                 std::vector<std::string> string_array = {strings...};
                 std::stringstream new_string;
                 for(auto &s : string_array)
                 {
                     if (s != string_array.back()) {
-                        new_string<<s<<separator;
+                        new_string<<s<<FileUtil::getSeparator();
                     }
                     else {
                         new_string<<s;
                     }
                 }
+				return new_string.str();
             }
 
 		};

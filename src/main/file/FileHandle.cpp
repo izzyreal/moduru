@@ -23,7 +23,8 @@ bool FileHandle::openRead() {
 
 bool FileHandle::openWrite() {
 	if (open) throw std::invalid_argument("Handle already open\n");
-	return file = fopen(path.c_str(), "rwb");
+	//return file = fopen(path.c_str(), "rwb");
+	return file = fopen(path.c_str(), "wb");
 }
 
 //bool FileHandle::isOpen() {
