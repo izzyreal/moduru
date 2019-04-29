@@ -22,7 +22,7 @@ namespace moduru {
             
             // Joins names with a path separator
             template<typename ... String_Types>
-            static std::string join_with_separator(String_Types ... strings)
+            static std::string joinPath(String_Types ... strings)
             {
                 std::vector<std::string> string_array = {strings...};
                 std::stringstream new_string;
