@@ -23,18 +23,12 @@ int File::getLength() {
 }
 
 bool File::setData(vector<char>* src) {
-	int counter = 0;
-	//if (handle) {
-		int size = (int) src->size();
-		ofstream os;
-		os.open(getPath().c_str(), ios::binary);
-		os.write(reinterpret_cast<char*>(&(*src)[0]), size);
-		os.close();
-		return true;
-	//}
-	//else {
-//		return false;
-//	}
+    int size = (int) src->size();
+    ofstream os;
+    os.open(getPath().c_str(), ios::binary);
+    os.write(reinterpret_cast<char*>(&(*src)[0]), size);
+    os.close();
+    return true;
 }
 
 bool File::create() {

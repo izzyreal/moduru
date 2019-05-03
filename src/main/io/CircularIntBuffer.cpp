@@ -97,7 +97,7 @@ int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
 				catch (const exception& e)
 				{
 					printf("failure in CircularIntbuffer\n");
-					printf(e.what());
+//                    printf(e.what());
 				}
 			}
 			int	nAvailable = Math::min(availableRead(), nRemainingBytes);

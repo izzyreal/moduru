@@ -367,7 +367,7 @@ static std::string bc_mul_positive (const char *lhs, int lint, int ldot, int lfr
   free(res);
 
   char *data = (char*)malloc((result.length()+1)*sizeof(char));
-  sprintf(data, result.c_str());
+  sprintf(data, "%s",  result.c_str());
   std::string ret = bc_round (data, resint, resdot, resfrac, resscale, scale, sign, 0);
   free(data);
 
@@ -488,7 +488,7 @@ static std::string bc_div_positive (const char *lhs, int lint, int ldot, int lfr
   free(divider);
 
   char *data = (char*)malloc((result.length()+1)*sizeof(char));
-  sprintf(data, result.c_str());
+  sprintf(data, "%s", result.c_str());
   std::string ret = bc_round (data, resint, resdot, resfrac, resscale, scale, sign, 0);
   free(data);
 
@@ -825,7 +825,7 @@ std::string BCMath::bcround (const std::string &lhs, int scale) {
     }
 
     char *data = (char*)malloc((result.length()+1)*sizeof(char));
-    sprintf(data, result.c_str());
+    sprintf(data, "%s", result.c_str());
     std::string ret = bc_round (data, lint+1, ldot+1, lfrac+1, lscale, scale, lsign, 1, 1);
     free(data);
 

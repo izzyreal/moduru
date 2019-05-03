@@ -48,10 +48,8 @@ namespace moduru {
 			~BufferedInputStream();
 
 		public:
-			int read(std::vector<char>* b);
+			int read(std::vector<char>* b) override;
 
-		private:
-			//static ::java::util::concurrent::atomic::AtomicReferenceFieldUpdater*& bufUpdater();
 		};
 
 	}

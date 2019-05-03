@@ -73,32 +73,29 @@ string StrUtil::padRight(string str, string pad, int size) {
 	return result;
 }
 
-string StrUtil::trim(string str) {
+string StrUtil::trim(const string& str) {
 	string copy = str;
-	while (!copy.empty() && copy.back() >=0 && copy.back() <= 255 && isspace(copy.back())) copy.pop_back();
+	while (!copy.empty() && isspace(copy.back())) copy.pop_back();
 	return copy;
 }
 
-void StrUtil::trim(string* str) {
-	while (!str->empty() && isspace(str->back())) str->pop_back();
-}
-
-string StrUtil::TrimDecimals(string str, int count) {
-	float f = NULL;
-	string copy = str;
+string StrUtil::TrimDecimals(const string& str, int count) {
 	try {
-		f = stof(str);
+		// We check if we're dealing with a float.
+        stof(str);
+        
+        string copy = str;
+        const int index = static_cast<int>(str.find("."));
+        const int numberOfDecimalsFound = static_cast<int>(str.length()) - index + 1;
+        if (numberOfDecimalsFound <= count) {
+            // Trimming is not possible
+            return str;
+        }
+        copy = copy.substr(0, index + 1 + count);
+        return copy;
 	}
-	catch (exception e) {
-		   //e can be discarded
-		return str;
-	}
-	if (f != NULL) {
-		int index = static_cast<int>(str.find("."));
-		int counted = static_cast<int>(str.length()) - index + 1;
-		if (counted <= count) return str; // no trimming possible
-		copy = copy.substr(0, index + 1 + count - 0);
-		return copy;
+	catch (const exception& e) {
+        // In this case we're fine returning str
 	}
 	return str;
 }

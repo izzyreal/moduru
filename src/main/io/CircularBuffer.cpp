@@ -97,7 +97,7 @@ int CircularBuffer::read(vector<char>* abData, int nOffset, int nLength)
 				}
 				catch (const std::exception& e)
 				{
-					auto what = e.what();
+					//auto what = e.what();
 					//string msg = what;
 				}
 			}

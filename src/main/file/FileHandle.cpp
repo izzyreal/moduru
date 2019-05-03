@@ -4,7 +4,7 @@
 using namespace moduru::file;
 using namespace std;
 
-FileHandle::FileHandle(std::string path, bool readOnly): path(path), readOnly(readOnly) {
+FileHandle::FileHandle(std::string _path, bool _readOnly) : readOnly(_readOnly), path(_path) {
 	bool success = false;
 	if (readOnly) {
 		success = openRead();
