@@ -11,7 +11,7 @@ namespace moduru {
 		class Observer {
 
 		public:
-			virtual void update(std::string s) {}
+            virtual void update(std::any) {}
 			virtual void update(Observable* obs, std::any arg) {}
 
 		public:
