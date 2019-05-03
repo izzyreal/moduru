@@ -55,8 +55,8 @@ int FileInputStream::read(vector<char>* b)
 
 int FileInputStream::readBytes(vector<char>* b, int off, int len) {
 	auto lFile = file.lock();
-	int length = lFile->getLength();
-	int pos = lFile->getPosition();
+//    int length = lFile->getLength();
+//    int pos = lFile->getPosition();
 	int toWrite = len;
 	int written = 0;
 	//if (lFile->getPosition() + 1 >= length) return -1;
