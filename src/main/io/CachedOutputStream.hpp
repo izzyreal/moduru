@@ -4,7 +4,7 @@
 namespace moduru {
 	namespace io {
 
-		class CachedOutputStream
+		class CachedOutputStream final
 			: public OutputStream
 		{
 

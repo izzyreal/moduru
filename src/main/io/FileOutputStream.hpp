@@ -12,7 +12,7 @@
 namespace moduru {
 	namespace io {
 
-		class FileOutputStream
+		class FileOutputStream final
 			: public OutputStream
 		{
 

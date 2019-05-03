@@ -56,7 +56,7 @@ namespace WonderRabbitProject
         , [](decltype(*range.first)& p){ return p.second; }
         );
         std::sort(std::begin(vector), std::end(vector));
-        return std::move(vector);
+        return vector;
       }
       
       int usb_hid_usage_id_from_name(const std::string& name) { return name_to_usb_hid_usage_id_table.at(name); }
@@ -72,7 +72,7 @@ namespace WonderRabbitProject
         , [](decltype(*range.first)& p){ return p.second; }
         );
         std::sort(std::begin(vector), std::end(vector));
-        return std::move(vector);
+        return vector;
       }
       
       bool is_valid(const int code) const

@@ -4,7 +4,7 @@
 namespace moduru {
 	namespace io {
 
-		class BufferedOutputStream
+		class BufferedOutputStream final
 			: public FilterOutputStream
 		{
 
