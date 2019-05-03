@@ -18,7 +18,7 @@ struct MRECT
   int L, T, R, B;
 
   MRECT() { L = T = R = B = 0; }
-  MRECT(int l, int t, int r, int b) : L(l), R(r), T(t), B(b) {}
+  MRECT(int l, int t, int r, int b) : L(l), T(t), R(r), B(b) {}
   //MRECT(int x, int y, IBitmap* pBitmap) : L(x), T(y), R(x + pBitmap->W), B(y + pBitmap->H / pBitmap->N) {}
 
   bool Empty() const
