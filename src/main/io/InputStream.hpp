@@ -23,6 +23,9 @@ namespace moduru {
 			virtual void reset();
 			virtual long skip(long n);
 
+        public:
+            virtual ~InputStream() {}
+            
 		};
 
 	}
