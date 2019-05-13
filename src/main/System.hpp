@@ -9,6 +9,7 @@ namespace moduru {
 	public:
 		static long nanoTime();
 		static std::string demangle(const std::string& typeIdName);
+		static void sleep(const int ms);
 
 	};
 

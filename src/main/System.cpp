@@ -1,6 +1,7 @@
 #include <System.hpp>
 
 #include <chrono>
+#include <thread>
 
 #ifdef __APPLE__
 #include <cxxabi.h>
@@ -31,3 +32,7 @@ string System::demangle(const string& typeIdName) {
     return copy;
 }
 #endif // _WIN32
+
+void System::sleep(const int ms) {
+	this_thread::sleep_for(chrono::duration(chrono::milliseconds(ms)));
+}

@@ -13,6 +13,27 @@ struct MColor
   void Clamp() { A = std::min(A, 255); R = std::min(R, 255); G = std::min(G, 255); B = std::min(B, 255); }
 };
 
+struct MColorF
+{
+	float A, R, G, B;
+	MColorF(float a = 1.0f, float r = 0.0f, float g = 0.0f, float b = 0.0f) : A(a), R(r), G(g), B(b) {}
+	bool operator==(const MColorF& rhs) { return (rhs.A == A && rhs.R == R && rhs.G == G && rhs.B == B); }
+	bool operator!=(const MColorF& rhs) { return !operator==(rhs); }
+	bool Empty() const { return A == 0 && R == 0 && G == 0 && B == 0; }
+	void Clamp() { A = std::min(A, 1.0f); R = std::min(R, 1.0f); G = std::min(G, 1.0f); B = std::min(B, 1.0f); }
+};
+
+static void setPixel3(unsigned char* pixel, const MColor& color) {
+	pixel[0] = color.R;
+	pixel[1] = color.G;
+	pixel[2] = color.B;
+}
+
+static void setPixel3F(unsigned char* pixel, const MColorF& color) {
+	auto colorInt = MColor(color.A * 255.0f, color.R * 255.0f, color.G * 255.0f, color.B * 255.0f);
+	setPixel3(pixel, colorInt);
+}
+
 struct MRECT
 {
   int L, T, R, B;
