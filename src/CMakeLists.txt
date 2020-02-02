@@ -3,14 +3,6 @@ cmake_minimum_required(VERSION 2.8.12)
 project(moduru)
 set(CMAKE_CXX_STANDARD 17)
 
-if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-else()
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
-endif()
-
-conan_basic_setup(NO_OUTPUT_DIRS)
-
 ## Configure main lib ##
 
 set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/main")
@@ -34,7 +26,6 @@ foreach(_source IN ITEMS ${_source_list_main})
 endforeach()
 
 add_library(moduru ${_source_list_main})
-conan_target_link_libraries(moduru)
 
 ## Configure test suite application ##
 
