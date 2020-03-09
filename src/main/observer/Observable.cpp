@@ -1,7 +1,5 @@
 #include <observer/Observable.hpp>
 
-#include <Logger.hpp>
-
 using namespace moduru::observer;
 using namespace std;
 
@@ -20,27 +18,18 @@ void Observable::notifyObservers() {
 	notifyObservers(nullptr);
 }
 
-void Observable::notifyObservers(std::any arg) {
+void Observable::notifyObservers(nonstd::any arg) {
 	for (auto& a : observers)
 		a->update(this, arg);
 }
 
 void Observable::addObserver(moduru::observer::Observer* o) {
-	string observerClass = typeid(*o).name();
-	string observableClass = typeid(*this).name();
-	//if (observableClass.compare("class mpc::sampler::NoteParameters") == 0)
-		//MLOG(observableClass + ": observer added of class " + observerClass);
 	for (auto& obs : observers)
 		if (obs == o) return;
 	observers.push_back(o);
 }
 
 void Observable::deleteObserver(moduru::observer::Observer* o) {
-	string observerClass = typeid(*o).name();
-	string observableClass = typeid(*this).name();
-	//if (observableClass.compare("class mpc::sampler::NoteParameters") == 0)
-		//MLOG("\nAttempting to remove from: " + observableClass + " an observer of class " + observerClass);
-	//int before = observers.size();
 	int counter = 0;
 	for (auto& o1 : observers) {
 		if (o1 == o) {
@@ -49,9 +38,6 @@ void Observable::deleteObserver(moduru::observer::Observer* o) {
 		}
 		counter++;
 	}
-	//if (before == observers.size()) {
-//		MLOG("No observers actually removed!");
-	//}
 }
 
 void Observable::deleteObservers() {

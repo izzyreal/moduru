@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <any>
+#include <thirdp/any.hpp>>
 
 namespace moduru {
 
@@ -14,7 +14,7 @@ namespace moduru {
 
 		public:
 			virtual void notifyObservers();
-			virtual void notifyObservers(std::any a);
+			virtual void notifyObservers(nonstd::any a);
 			void setChanged();
 			void addObserver(moduru::observer::Observer* o);
 			void deleteObservers();
