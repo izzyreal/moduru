@@ -83,6 +83,7 @@
 #if any_CPP17_OR_GREATER
 
 #include <utility>
+#include <typeinfo>
 
 namespace nonstd {
 

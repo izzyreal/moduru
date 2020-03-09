@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <thirdp/any.hpp>>
+#include <thirdp/any.hpp>
 
 namespace moduru {
 
