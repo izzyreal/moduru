@@ -3,9 +3,9 @@
 #include <chrono>
 #include <thread>
 
-#ifdef __APPLE__
+#if defined (__APPLE__) || defined (__linux__)
 #include <cxxabi.h>
-#endif // __APPLE__
+#endif
 
 using namespace std;
 using namespace moduru;
@@ -15,13 +15,13 @@ long System::nanoTime() {
 	return (long) chrono::duration_cast<chrono::nanoseconds>(nanoTime.time_since_epoch()).count();
 }
 
-#ifdef __APPLE__
+#if defined (__APPLE__) || defined (__linux__)
 string System::demangle(const string& typeIdName) {
     int status = 0;
     char* demangled = abi::__cxa_demangle(typeIdName.c_str(), 0, 0, &status);
     return string(demangled);
 }
-#endif // __APPLE__
+#endif
 
 #ifdef _WIN32
 string System::demangle(const string& typeIdName) {
