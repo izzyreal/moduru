@@ -60,8 +60,8 @@
 // Use C++17 std::any if available and requested:
 
 #if any_CPP17_OR_GREATER && defined(__has_include )
-# if __has_include( <any> )
-#  define any_HAVE_STD_ANY  0 // Always 0 hack by Izmar so it will be used on MacOS < 10.14
+# if __has_include( <any> ) && !defined(__APPLE__) && !defined(__linux__)
+#  define any_HAVE_STD_ANY  1
 # else
 #  define any_HAVE_STD_ANY  0
 # endif
