@@ -34,5 +34,5 @@ string System::demangle(const string& typeIdName) {
 #endif // _WIN32
 
 void System::sleep(const int ms) {
-	this_thread::sleep_for(chrono::duration(chrono::milliseconds(ms)));
+	this_thread::sleep_for(chrono::milliseconds(ms));
 }
