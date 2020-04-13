@@ -11,7 +11,7 @@
 
 template <class T>
 class circular_buffer {
-		
+
 public:
 	circular_buffer(size_t size) :
 		buf_(std::unique_ptr<T[]>(new T[size])),
@@ -33,6 +33,19 @@ public:
 		}
 	}
 
+	void move(int delta)
+	{
+		tail_ += delta;
+		if (tail_ > size_)
+		{
+			tail_ -= size_;
+		}
+		else if (head_ < 0)
+		{
+			tail_ += size_;
+		}
+	}
+
 	T get(size_t index)
 	{
 		if (index > size_)
@@ -41,7 +54,7 @@ public:
 		}
 		return buf_[index];
 	}
-	
+
 	T get(void)
 	{
 		std::lock_guard<std::mutex> lock(mutex_);
