@@ -13,7 +13,7 @@ namespace moduru {
 		{
 
 		public:
-			std::vector<std::shared_ptr<FsNode> > listFiles();
+			std::vector<std::shared_ptr<FsNode>> listFiles(bool recursive = false);
 
 		public:
 			bool isFile() override;
