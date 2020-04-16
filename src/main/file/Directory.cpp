@@ -27,11 +27,16 @@ Directory::Directory(string const path, Directory* const parent)
 }
 
 vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
+	
 	if (!isDirectory()) {
 		return vector<shared_ptr<FsNode>>(0);
 	}
-    DIR* dir = opendir(getPath().c_str());
-	if (dir == NULL) return vector<shared_ptr<FsNode>>(0);
+
+	DIR* dir = opendir(getPath().c_str());
+
+	if (dir == NULL) {
+		return vector<shared_ptr<FsNode>>(0);
+	}
 
 	vector<shared_ptr<FsNode>> res;
 
@@ -80,9 +85,9 @@ vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
         
 		if (childIsDir) {
 			auto directory = make_shared<Directory>(childPath, this);
-			
+
 			if (recursive) {
-				auto children = directory->listFiles();
+				auto children = directory->listFiles(true);
 				for (auto& c : children) {
 					res.push_back(move(shared_ptr<FsNode>(c)));
 				}
@@ -91,7 +96,7 @@ vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
 			child = directory;
 		}
         else {
-            child = make_shared<File>(childPath, this);
+			child = make_shared<File>(childPath, this);
         }
         res.push_back(move(child));
     }

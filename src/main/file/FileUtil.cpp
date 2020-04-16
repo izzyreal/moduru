@@ -15,6 +15,8 @@
 #include <dirent.h>
 #endif
 
+#include <Logger.hpp>
+
 using namespace moduru::file;
 using namespace std;
 

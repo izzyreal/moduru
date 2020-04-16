@@ -6,6 +6,8 @@
 
 #include <file/File.hpp>
 
+#include <Logger.hpp>
+
 using namespace moduru::raw::fat;
 using namespace moduru::lang;
 using namespace moduru::file;
@@ -77,6 +79,7 @@ string ShortNameGenerator::stripLeadingPeriods(string str)
 
 ShortName* ShortNameGenerator::generateShortName(string longFullName)
 {
+	MLOG("Generating shortName for " + longFullName);
 	longFullName = StrUtil::toUpper(stripLeadingPeriods(longFullName));
 	string longName;
 	string longExt;
