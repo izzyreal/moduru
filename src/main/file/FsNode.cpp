@@ -38,6 +38,15 @@ const std::string FsNode::getPath() {
 	return path;
 }
 
+const std::string FsNode::getNameWithoutExtension() {
+	auto name = getName();
+	auto extIndex = name.find_last_of('.');
+	if (extIndex != string::npos) {
+		name = name.substr(0, extIndex);
+	}
+	return name;
+}
+
 const std::string FsNode::getName() {
 
 #if defined(_WIN32)

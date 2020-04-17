@@ -3,40 +3,41 @@
 #include <string>
 #include <memory>
 
-namespace moduru {
-	namespace file {
-		class Directory;
-		class FsNode {
+namespace moduru::file {
+	class Directory;
+}
 
-		private:
-			std::string const path;
-			Directory* const parent;
+namespace moduru::file {
+	class FsNode {
 
-		public:
-			const std::string getPath();
-			const std::string getName();
-			Directory* const getParent();
+	private:
+		std::string const path;
+		Directory* const parent;
 
-		public:
-			virtual int getLength() { return 0; };
+	public:
+		const std::string getPath();
+		const std::string getName();
+		const std::string getNameWithoutExtension();
+		Directory* const getParent();
 
-		public:
-			virtual bool isFile() = 0;
-			virtual bool isDirectory() = 0;
-			virtual bool create() = 0;
-			
-		public:
-			virtual bool del();
+	public:
+		virtual int getLength() { return 0; };
 
-		public:
-			bool renameTo(std::string newName);
-			bool exists();
+	public:
+		virtual bool isFile() = 0;
+		virtual bool isDirectory() = 0;
+		virtual bool create() = 0;
 
-		public:
-			FsNode(std::string const path, Directory* const parent);
-			virtual ~FsNode();
+	public:
+		virtual bool del();
 
-		};
+	public:
+		bool renameTo(std::string newName);
+		bool exists();
 
-	}
+	public:
+		FsNode(std::string const path, Directory* const parent);
+		virtual ~FsNode();
+
+	};
 }
