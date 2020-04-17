@@ -79,7 +79,6 @@ string ShortNameGenerator::stripLeadingPeriods(string str)
 
 ShortName* ShortNameGenerator::generateShortName(string longFullName)
 {
-	MLOG("Generating shortName for " + longFullName);
 	longFullName = StrUtil::toUpper(stripLeadingPeriods(longFullName));
 	string longName;
 	string longExt;
@@ -96,7 +95,8 @@ ShortName* ShortNameGenerator::generateShortName(string longFullName)
 		longExt = tidyString(longFullName.substr(dotIdx + 1));
 	}
 	string shortExt = (longExt.length() > 3) ? longExt.substr(0, 3) : longExt;
-	if (forceSuffix || (longName.length() > 8) || usedNames.find(StrUtil::toLower(ShortName(longName, shortExt).asSimpleString())) != usedNames.end()) {
+    
+	if (forceSuffix || (longName.length() > 8) || usedNames.find(ShortName(longName, shortExt).asSimpleString()) != usedNames.end()) {
 		auto const maxLongIdx = static_cast<int>(longName.length() < 8 ? longName.length() : 8);
 		for (int i = 1; i < 99999; i++) {
 			string serial = "~" + to_string(i);
@@ -104,7 +104,7 @@ ShortName* ShortNameGenerator::generateShortName(string longFullName)
 			int trimIndex = maxLongIdx < 8 - serialLen ? maxLongIdx : 8 - serialLen;
 			auto const shortName = longName.substr(0, trimIndex) + serial;
 			auto const result = new ShortName(shortName, shortExt);
-			if (usedNames.find(StrUtil::toLower(result->asSimpleString())) == usedNames.end()) {
+			if (usedNames.find(result->asSimpleString()) == usedNames.end()) {
 				return result;
 			}
 		}
