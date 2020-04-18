@@ -13,7 +13,7 @@ using namespace moduru::lang;
 using namespace moduru::file;
 using namespace std;
 
-ShortNameGenerator::ShortNameGenerator(set<string> usedNames)
+ShortNameGenerator::ShortNameGenerator(const set<string>& usedNames)
 {
 	this->usedNames = usedNames;
 }
@@ -77,39 +77,46 @@ string ShortNameGenerator::stripLeadingPeriods(string str)
 	return sb;
 }
 
-ShortName* ShortNameGenerator::generateShortName(string longFullName)
+ShortName ShortNameGenerator::generateShortName(const string& longFullName)
 {
-	longFullName = StrUtil::toUpper(stripLeadingPeriods(longFullName));
+	auto name = StrUtil::toUpper(stripLeadingPeriods(longFullName));
 	string longName;
 	string longExt;
-	size_t dotIdx = longFullName.find_last_of('.');
+	size_t dotIdx = name.find_last_of('.');
 	bool forceSuffix = false;
 	if (dotIdx == string::npos) {
-		forceSuffix = !cleanString(longFullName);
-		longName = tidyString(longFullName);
+		forceSuffix = !cleanString(name);
+		longName = tidyString(name);
 		longExt = "";
 	}
 	else {
-		forceSuffix = !cleanString(longFullName.substr(0, dotIdx));
-		longName = tidyString(longFullName.substr(0, dotIdx));
-		longExt = tidyString(longFullName.substr(dotIdx + 1));
+		forceSuffix = !cleanString(name.substr(0, dotIdx));
+		longName = tidyString(name.substr(0, dotIdx));
+		longExt = tidyString(name.substr(dotIdx + 1));
 	}
 	string shortExt = (longExt.length() > 3) ? longExt.substr(0, 3) : longExt;
-    
+	
 	if (forceSuffix || (longName.length() > 8) || usedNames.find(ShortName(longName, shortExt).asSimpleString()) != usedNames.end()) {
+
 		auto const maxLongIdx = static_cast<int>(longName.length() < 8 ? longName.length() : 8);
+
 		for (int i = 1; i < 99999; i++) {
+		
 			string serial = "~" + to_string(i);
 			int serialLen = static_cast<int>(serial.length());
 			int trimIndex = maxLongIdx < 8 - serialLen ? maxLongIdx : 8 - serialLen;
+			
 			auto const shortName = longName.substr(0, trimIndex) + serial;
-			auto const result = new ShortName(shortName, shortExt);
-			if (usedNames.find(result->asSimpleString()) == usedNames.end()) {
+			auto result = ShortName(shortName, shortExt);
+
+			if (usedNames.find(result.asSimpleString()) == usedNames.end()) {
 				return result;
 			}
 		}
-		string error = "could not generate short name for " + longFullName;
-		return nullptr;
+
+		string error = "Short name generation ran out of serials for " + longFullName + ", returning original!";
+		return longFullName;
 	}
-	return new ShortName(longName, shortExt);
+
+	return ShortName(longName, shortExt);
 }

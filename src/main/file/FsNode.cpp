@@ -77,9 +77,21 @@ const std::string FsNode::getName() {
 }
 
 bool FsNode::renameTo(std::string newName) {
-	if (path.find("Users") == string::npos || path.find("vMPC") == string::npos || path.find("Stores") == string::npos || path.find("MPC2000XL") == string::npos) return false;
-	int result = rename(path.c_str(), std::string(parent->getPath() + FileUtil::getSeparator() + newName).c_str());
-	return result == 0;
+	
+	if (path.find("Users") == string::npos || path.find("vMPC") == string::npos || path.find("Stores") == string::npos || path.find("MPC2000XL") == string::npos) {
+		return false;
+	}
+	
+	auto newPath = std::string(parent->getPath() + FileUtil::getSeparator() + newName);
+
+	int result = rename(path.c_str(), newPath.c_str());
+	
+	if (result == 0) {
+		path = newPath;
+		return true;
+	}
+	
+	return false;
 }
 
 FsNode::~FsNode() {

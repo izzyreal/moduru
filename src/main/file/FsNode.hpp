@@ -11,7 +11,7 @@ namespace moduru::file {
 	class FsNode {
 
 	private:
-		std::string const path;
+		std::string path;
 		Directory* const parent;
 
 	public:

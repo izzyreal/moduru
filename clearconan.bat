@@ -1,0 +1,1 @@
+rmdir C:\Users\Izmar\.conan\data\moduru /s /q
