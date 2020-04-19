@@ -69,7 +69,7 @@ const std::string FsNode::getNameWithoutExtension() {
 
 const std::string FsNode::getName() {
 	
-	if (shortName.has_value()) {
+	if (isDirectory() && shortName.has_value()) {
 		return shortName.value();
 	}
 
