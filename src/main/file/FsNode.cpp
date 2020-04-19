@@ -30,7 +30,7 @@ FsNode::FsNode(std::string const path, Directory* const parent)
 
 			if (length > 0) {
 				auto result = string(buffer);
-				shortName.emplace(result.substr(FileUtil::GetLastSeparator(result) + 1));
+				shortName = make_shared<string>(result.substr(FileUtil::GetLastSeparator(result) + 1));
 			}
 
 			delete[] buffer;
@@ -69,8 +69,8 @@ const std::string FsNode::getNameWithoutExtension() {
 
 const std::string FsNode::getName() {
 	
-	if (isDirectory() && shortName.has_value()) {
-		return shortName.value();
+	if (isDirectory() && shortName) {
+		return (*shortName.get());
 	}
 
 	return path.substr(FileUtil::GetLastSeparator(path) + 1);
@@ -88,8 +88,8 @@ bool FsNode::renameTo(std::string newName) {
 	
 	if (result == 0) {
 		path = newPath;
-		if (shortName.has_value()) {
-			shortName.emplace(newName);
+		if (shortName) {
+			shortName = make_shared<string>(newName);
 		}
 		return true;
 	}

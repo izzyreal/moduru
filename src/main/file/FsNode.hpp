@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <optional>
+#include <memory>
 
 namespace moduru::file {
 	class Directory;
@@ -13,7 +13,7 @@ namespace moduru::file {
 	private:
 		std::string path;
 		Directory* const parent;
-		std::optional<std::string> shortName;
+		std::shared_ptr<std::string> shortName;
 
 	public:
 		const std::string getPath();
