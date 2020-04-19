@@ -7,7 +7,7 @@
 
 #if defined (_WIN32)
 #include <Windows.h>
-#endif // 
+#endif 
 
 
 using namespace moduru::file;
@@ -16,6 +16,26 @@ using namespace std;
 FsNode::FsNode(std::string const path, Directory* const parent)
 	: path(path), parent(parent)
 {
+#if defined(_WIN32)
+		long     length = 0;
+		TCHAR* buffer = NULL;
+
+		length = GetShortPathName(path.c_str(), NULL, 0);
+
+		if (length > 0) {
+
+			buffer = new TCHAR[length];
+
+			length = GetShortPathName(path.c_str(), buffer, length);
+
+			if (length > 0) {
+				auto result = string(buffer);
+				shortName.emplace(result.substr(FileUtil::GetLastSeparator(result) + 1));
+			}
+
+			delete[] buffer;
+		}
+#endif
 }
 
 Directory* const FsNode::getParent() {
@@ -48,31 +68,11 @@ const std::string FsNode::getNameWithoutExtension() {
 }
 
 const std::string FsNode::getName() {
-
-#if defined(_WIN32)
-	long     length = 0;
-	TCHAR* buffer = NULL;
-
-	length = GetShortPathName(path.c_str(), NULL, 0);
-
-	if (length == 0) {
-		MLOG("length == 0");
-		return path.substr(FileUtil::GetLastSeparator(path) + 1);
+	
+	if (shortName.has_value()) {
+		return shortName.value();
 	}
 
-	buffer = new TCHAR[length];
-
-	length = GetShortPathName(path.c_str(), buffer, length);
-	if (length == 0) {
-		return path.substr(FileUtil::GetLastSeparator(path) + 1);
-	}
-
-	auto result = string(buffer);
-
-	delete[] buffer;
-	return result.substr(FileUtil::GetLastSeparator(result) + 1);
-
-#endif
 	return path.substr(FileUtil::GetLastSeparator(path) + 1);
 }
 
@@ -88,6 +88,9 @@ bool FsNode::renameTo(std::string newName) {
 	
 	if (result == 0) {
 		path = newPath;
+		if (shortName.has_value()) {
+			shortName.emplace(newName);
+		}
 		return true;
 	}
 	
