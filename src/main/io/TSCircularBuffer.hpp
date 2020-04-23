@@ -37,11 +37,11 @@ public:
 	void move(int delta)
 	{
 		tail_ += delta;
-		if (tail_ > size_)
+		if (tail_ >= size_)
 		{
 			tail_ -= size_;
 		}
-		else if (head_ < 0)
+		else if (tail_ < 0)
 		{
 			tail_ += size_;
 		}
