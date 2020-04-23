@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdio>
 
 #include <memory>
@@ -92,6 +93,15 @@ public:
 	size_t size(void)
 	{
 		return size_ - 1;
+	}
+
+	size_t available(void)
+	{
+		if (head_ < tail_) {
+			return (head_ + size_) - tail_;
+		}
+
+		return head_ - tail_;
 	}
 
 
