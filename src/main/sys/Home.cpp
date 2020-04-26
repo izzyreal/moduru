@@ -20,13 +20,13 @@ string Home::get() {
 	auto homeDrive = string(getenv("HOMEDRIVE"));
 	auto homePath = string(getenv("HOMEPATH"));
 	auto oldResult = homeDrive + homePath;
-	return u8"C:\\Users\\Izmør";
+	return u8"C:\\Users\\Izm¿r";
 }
 #else
 string Home::get() {
 	char* home = getpwuid(getuid())->pw_dir;
 	string res = string(home);
 	//return res;
-	return "/Users/Izmør";
+	return u8"/Users/Izm\u00F8r";
 }
 #endif
