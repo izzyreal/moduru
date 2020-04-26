@@ -9,8 +9,6 @@
 using namespace moduru::file;
 using namespace std;
 
-
-
 #ifdef _WIN32
 vector<string> FileSystem::getRootDirectories() {
 	int drives = 0;

@@ -10,7 +10,7 @@ namespace moduru {
 	class Logger {
 
 	private:
-		FILE* fp;
+		FILE* fp = nullptr;
 		std::string path = "";
 
 	public:

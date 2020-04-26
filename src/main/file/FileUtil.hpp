@@ -6,39 +6,40 @@
 
 #include <stdio.h>
 
-namespace moduru {
-	namespace file {
+using namespace std;
 
-		class FileUtil {
+namespace moduru::file {
 
-		public:
-			static bool Exists(std::string path);
-			static std::vector<std::string> splitName(std::string name);
-			static int GetLastSeparator(std::string path);
-			static bool IsDirectory(std::string path);
+    class FileUtil {
 
-            // Returns path separator used by the OS
-            static std::string getSeparator();
-            
-            // Joins names with a path separator
-            template<typename ... String_Types>
-            static std::string joinPath(String_Types ... strings)
+    public:
+        static bool Exists(string path);
+        static vector<string> splitName(string name);
+        static int GetLastSeparator(string path);
+        static bool IsDirectory(string path);
+
+        static FILE* fopenw(const string& path, const string& mode);
+
+        // Returns path separator used by the OS
+        static string getSeparator();
+
+        // Joins names with a path separator
+        template<typename ... String_Types>
+        static string joinPath(String_Types ... strings)
+        {
+            vector<string> string_array = { strings... };
+            stringstream new_string;
+            for (auto& s : string_array)
             {
-                std::vector<std::string> string_array = {strings...};
-                std::stringstream new_string;
-                for(auto &s : string_array)
-                {
-                    if (s != string_array.back()) {
-                        new_string<<s<<FileUtil::getSeparator();
-                    }
-                    else {
-                        new_string<<s;
-                    }
+                if (s != string_array.back()) {
+                    new_string << s << FileUtil::getSeparator();
                 }
-				return new_string.str();
+                else {
+                    new_string << s;
+                }
             }
+            return new_string.str();
+        }
 
-		};
-
-	}
+    };
 }

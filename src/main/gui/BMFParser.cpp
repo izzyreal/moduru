@@ -1,18 +1,20 @@
 #include "BMFParser.hpp"
 
+
 #include <file/File.hpp>
 #include <file/FileUtil.hpp>
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <stddef.h>
+//#include <stdint.h>
+//#include <string.h>
 
 #include <Logger.hpp>
 
 using namespace moduru;
 using namespace moduru::gui;
+
 using namespace std;
 
 BMFParser::BMFParser(string fontPath) {
@@ -23,8 +25,10 @@ BMFParser::BMFParser(string fontPath) {
 	{
 		MLOG("Loaded BMFont data correctly.\n");
 	}
-	if (data != NULL)
+
+	if (data != NULL) {
 		free(data);
+	}
 
 	string bmpFileName = loadedFont.pages[0].name;
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
@@ -140,72 +144,17 @@ bool BMFParser::GetBMFontData(const char* pBinary, size_t fileSize, bmfont* pBMF
 	return true;
 }
 
-/*
-// We want to avoid fopen, so here we rely on moduru's file system
-std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
-
-	const int infosize = 54;
-	file::File f(filePath, nullptr);
-
-	if (!f.exists()) return {};
-	vector<char> data;
-	auto success = f.getData(&data);
-
-	if (!success) return {};
-
-	vector<char> buf = { data[10], data[11], data[12], data[13] };
-	uint32_t n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int imageDataOffset = (int)n;
-
-	buf = { data[18], data[19], data[20], data[21] };
-	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int width = n;
-
-	buf = { data[22], data[23], data[24], data[25] };
-	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int height = n;
-	int imageSize = width*height;
-
-	auto result = std::vector<std::vector<bool>>(width, std::vector<bool>(height));
-
-	vector<char> imageData(data.begin() + infosize, data.end());
-	
-	int xcounter = 0;
-	int ycounter = 0;
-
-	int pixelcounter = 0;
-	int bitcounter = 7;
-	int charcounter = 0;
-
-	while (pixelcounter < imageSize) {
-		if (bitcounter < 0) {
-			bitcounter = 7;
-			charcounter++;
-		}
-		if (xcounter >= width) {
-			xcounter = 0;
-			ycounter++;
-		}
-
-		if ((imageData.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
-
-		bitcounter--;
-		xcounter++;
-		pixelcounter++;
-	}
-	return result;
-}
-*/
-
 std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
 
 	std::vector<std::vector<bool>> result;
 
 	const int infosize = 54;
 
-	FILE* f = fopen(filePath.c_str(), "rb");
-
-	if (f == nullptr) return result;
+	FILE* f = moduru::file::FileUtil::fopenw(filePath, "rb");
+	
+	if (f == nullptr) {
+		return result;
+	}
 
 	unsigned char info[infosize];
 	fread(info, sizeof(unsigned char), infosize, f);
@@ -257,20 +206,17 @@ std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) 
 	return result;
 }
 
-char* BMFParser::GetFileData(const char* pPath, size_t* pSize)
+char* BMFParser::GetFileData(string filePath, size_t* pSize)
 {
-	char* pData = NULL;
-	FILE* pFile = NULL;
-#if defined(_MSC_VER)
-	fopen_s(&pFile, pPath, "rb");
-#else
-	pFile = fopen(pPath, "rb");
-#endif
-	if (pFile == NULL)
+	char* pData = nullptr;
+	FILE* pFile = moduru::file::FileUtil::fopenw(filePath, "rb");
+
+	if (pFile == nullptr)
 	{
 		*pSize = 0;
-		return NULL;
+		return nullptr;
 	}
+
 	fseek(pFile, 0, SEEK_END);
 	*pSize = ftell(pFile);
 	fseek(pFile, 0, SEEK_SET);

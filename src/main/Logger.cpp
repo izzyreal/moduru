@@ -1,6 +1,14 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <Logger.hpp>
 
+#include <filesystem>
+
+#include <locale>
+#include <codecvt>
+#include <string>
+
+#include <file/FileUtil.hpp>
+
 using namespace moduru;
 using namespace std;
 
@@ -16,9 +24,15 @@ void Logger::setPath(std::string s) {
 }
 
 void Logger::log(std::string s) {
-	if (path.compare("") == 0) return;
+	if (path.compare("") == 0) {
+		return;
+	}
+
+	fp = moduru::file::FileUtil::fopenw(path, "ab");
+
 	s += "\n";
-	fp = fopen(path.c_str(), "a+b");
+
 	fwrite(s.c_str(), s.length(), 1, fp);
+
 	fclose(fp);
 }

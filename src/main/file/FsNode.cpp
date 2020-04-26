@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #include <file/FsNode.hpp>
 
 #include <file/Directory.hpp>

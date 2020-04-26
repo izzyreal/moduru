@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <file/FileHandle.hpp>
 
+#include <file/FileUtil.hpp>
+
 using namespace moduru::file;
 using namespace std;
 
@@ -17,14 +19,17 @@ FileHandle::FileHandle(std::string _path, bool _readOnly) : readOnly(_readOnly),
 }
 
 bool FileHandle::openRead() {
-	if (open) throw std::invalid_argument("Handle already open\n");
-	return file = fopen(path.c_str(), "rb");
+	if (open) {
+		throw std::invalid_argument("Handle already open");
+	}
+	return file = FileUtil::fopenw(path.c_str(), "rb");
 }
 
 bool FileHandle::openWrite() {
-	if (open) throw std::invalid_argument("Handle already open\n");
-	//return file = fopen(path.c_str(), "rwb");
-	return file = fopen(path.c_str(), "wb");
+	if (open) {
+		throw std::invalid_argument("Handle already open");
+	}
+	return file = FileUtil::fopenw(path.c_str(), "wb");
 }
 
 //bool FileHandle::isOpen() {

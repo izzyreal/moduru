@@ -19,7 +19,8 @@ using namespace std;
 string Home::get() {
 	auto homeDrive = string(getenv("HOMEDRIVE"));
 	auto homePath = string(getenv("HOMEPATH"));
-	return homeDrive + homePath;
+	auto oldResult = homeDrive + homePath;
+	return u8"C:\\Users\\Izmør";
 }
 #else
 string Home::get() {

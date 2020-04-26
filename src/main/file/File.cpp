@@ -1,7 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <file/File.hpp>
+#include <file/FileUtil.hpp>
 
 #include <fstream>
+#include <filesystem>
 
 #if defined (__APPLE__) || defined(__linux__)
 #include <sys/stat.h>
@@ -97,16 +99,24 @@ void File::writeShort(short& s) {
 }
 
 bool File::getData(vector<char>* dest) {
-	openRead();
-	if (handle) {
-		handle->seek(0);
-		int size = getLength();
-		if (dest->size() != size) dest->resize(size);
-		ifstream is;
-		is.open(getPath().c_str(), ios::binary);
-		is.seekg(0);
-		is.read(reinterpret_cast<char*>(&(*dest)[0]), size);
-		is.close();
+	//openRead();
+	//if (handle) {
+		
+	auto fp = FileUtil::fopenw(getPath(), "rb");
+
+	if (fp != NULL) {
+
+		fseek(fp, 0L, SEEK_END);
+		auto size = ftell(fp);
+
+		fseek(fp, 0L, SEEK_SET);
+
+		if (dest->size() != size) {
+			dest->resize(size);
+		}
+
+		fread(&(*dest)[0], 1, size, fp);
+		fclose(fp);
 		return true;
 	}
 	else {
