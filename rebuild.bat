@@ -1,4 +1,5 @@
-clearconan.bat
+CALL clearconan.bat
+
 rmdir C:\Users\Izmar\git\moduru\build\32bit /s /q
 rmdir C:\Users\Izmar\git\moduru\build\64bit /s /q
 
