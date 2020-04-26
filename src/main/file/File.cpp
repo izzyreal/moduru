@@ -19,9 +19,22 @@ File::File(string const path, Directory* const parent)
 }
 
 int File::getLength() {
+#ifdef _WIN32
+	FILE* file = moduru::file::FileUtil::fopenw(getPath(), "rb");
+
+	if (file == NULL) {
+		return -1;
+	}
+
+	fseek(file, 0, SEEK_END);
+	auto size = ftell(file);
+	fclose(file);
+	return (int) size;
+#else
 	struct stat stat_buf;
 	int rc = stat(getPath().c_str(), &stat_buf);
 	return rc == 0 ? stat_buf.st_size : -1;
+#endif
 }
 
 bool File::setData(vector<char>* src) {

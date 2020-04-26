@@ -72,12 +72,28 @@ int FileUtil::GetLastSeparator(string path) {
 }
 
 bool FileUtil::IsDirectory(string path) {
+#ifdef _WIN32
+		std::wstring pathW;
+		pathW.resize(path.size());
+		int newModeSize = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), path.length(), const_cast<wchar_t*>(pathW.c_str()), path.length());
+		pathW.resize(newModeSize);
+		DWORD ftyp = GetFileAttributesW(pathW.c_str());
+		if (ftyp == INVALID_FILE_ATTRIBUTES)
+			return false;
+
+		if (ftyp & FILE_ATTRIBUTE_DIRECTORY) {
+			return true;
+		}
+
+		return false;
+#else
 	DIR* d = opendir(path.c_str());
 	if (d != NULL) {
 		closedir(d);
 		return true;
 	}
 	return false;
+#endif
 }
 
 vector<string> FileUtil::splitName(string name) {
