@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <Logger.hpp>
 
-#include <filesystem>
-
 #include <locale>
 #include <codecvt>
 #include <string>

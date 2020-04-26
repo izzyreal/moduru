@@ -25,7 +25,7 @@ using namespace moduru::file;
 FILE* FileUtil::fopenw(const std::string& path, const std::string& mode)
 {
 #ifndef _WIN32
-	return fopen(filePath.c_str(), mode);
+	return fopen(path.c_str(), mode.c_str());
 #else
 	std::wstring filePathW;
 	filePathW.resize(path.size());

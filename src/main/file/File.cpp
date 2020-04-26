@@ -3,7 +3,6 @@
 #include <file/FileUtil.hpp>
 
 #include <fstream>
-#include <filesystem>
 
 #if defined (__APPLE__) || defined(__linux__)
 #include <sys/stat.h>

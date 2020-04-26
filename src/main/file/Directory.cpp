@@ -60,7 +60,7 @@ vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
 	while ((ent = readdir(dir)) != NULL) {
 #endif
 
-		if (ent->d_type != DT_DIR && ent->d_type != DT_REG && ent->d_type != _S_IFDIR) {
+		if (ent->d_type != DT_DIR && ent->d_type != DT_REG) {
 			//continue;
 		}
 

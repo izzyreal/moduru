@@ -26,6 +26,7 @@ string Home::get() {
 string Home::get() {
 	char* home = getpwuid(getuid())->pw_dir;
 	string res = string(home);
-	return res;
+	//return res;
+	return "/Users/Izmør";
 }
 #endif
