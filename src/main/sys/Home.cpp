@@ -41,9 +41,14 @@ string Home::get() {
 }
 #else
 string Home::get() {
-    char* home = getpwuid(getuid())->pw_dir;
-    string res = string(home);
-    return res;
+    //auto uid = getuid();
+    unsigned int uid = 503;
+    auto pwuid = getpwuid(uid);
+    auto homePath = string(getenv("HOME"));
+    printf("home: %s\n", homePath.c_str());
+//    char* home = getpwuid(getuid())->pw_dir;
+//    string res = string(home);
+    return "/Users/admin/Library/Developer/CoreSimulator/Devices/BC2607E1-B614-4A67-B285-8881021AEC7E/data/Root";
     //return u8"/Users/Izm\u00F8r";
 }
 #endif
