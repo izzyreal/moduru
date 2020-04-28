@@ -7,6 +7,8 @@
 #if defined (_WIN32)
 #include <thirdp/dirent.h>
 #include <Windows.h>
+#include <codecvt>
+#include <locale>
 #endif
 
 #if defined (__APPLE__)
@@ -21,23 +23,47 @@
 #include <Logger.hpp>
 
 using namespace moduru::file;
+using namespace std;
 
-FILE* FileUtil::fopenw(const std::string& path, const std::string& mode)
+FILE* FileUtil::fopenw(const string& path, const string& mode)
 {
 #ifndef _WIN32
 	return fopen(path.c_str(), mode.c_str());
 #else
-	std::wstring filePathW;
+	wstring filePathW;
 	filePathW.resize(path.size());
 	int newPathSize = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), path.length(), const_cast<wchar_t*>(filePathW.c_str()), path.length());
 	filePathW.resize(newPathSize);
 	
-	std::wstring modeW;
+	wstring modeW;
 	modeW.resize(mode.size());
 	int newModeSize = MultiByteToWideChar(CP_UTF8, 0, mode.c_str(), mode.length(), const_cast<wchar_t*>(modeW.c_str()), mode.length());
 	modeW.resize(newModeSize);
 
 	return _wfopen(filePathW.c_str(), modeW.c_str());
+#endif
+}
+
+ifstream FileUtil::ifstreamw(const string& path, int flags)
+{
+#ifdef _WIN32
+	wstring_convert<codecvt_utf8<wchar_t>, wchar_t> strconverter;
+	auto result = ifstream(strconverter.from_bytes(path).c_str(), flags);
+	result.unsetf(ios_base::skipws);
+	return result;
+	
+#else
+	return ifstream(path.c_str(), flags); 
+#endif
+}
+
+ofstream FileUtil::ofstreamw(const string& path, int flags)
+{
+#ifdef _WIN32
+	wstring_convert<codecvt_utf8<wchar_t>, wchar_t> strconverter;
+	return ofstream(strconverter.from_bytes(path).c_str(), flags);
+#else
+	return ofstream(path.c_str(), flags); 
 #endif
 }
 
@@ -48,7 +74,7 @@ bool FileUtil::Exists(string path)
 #ifdef _WIN32
 
 	if (fp == NULL) {
-		std::wstring pathW;
+		wstring pathW;
 		pathW.resize(path.size());
 		int newModeSize = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), path.length(), const_cast<wchar_t*>(pathW.c_str()), path.length());
 		pathW.resize(newModeSize);
@@ -73,7 +99,7 @@ int FileUtil::GetLastSeparator(string path) {
 
 bool FileUtil::IsDirectory(string path) {
 #ifdef _WIN32
-		std::wstring pathW;
+		wstring pathW;
 		pathW.resize(path.size());
 		int newModeSize = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), path.length(), const_cast<wchar_t*>(pathW.c_str()), path.length());
 		pathW.resize(newModeSize);

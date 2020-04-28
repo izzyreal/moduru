@@ -1,43 +1,36 @@
 #pragma once
 
-#include <fstream>
 #include <string>
 
-namespace moduru {
-	namespace file {
+namespace moduru::file {
 
-		class FileHandle final {
+	class FileHandle final {
 
-		private:
-			const bool readOnly;
-			const std::string path;
-			
-			FILE* file;
-			bool open{ false };
+	private:
+		const bool readOnly;
+		const std::string path;
 
-		private:
-			bool openRead();
-			bool openWrite();
+		FILE* file;
+		bool open{ false };
 
-		public:
-			//bool isOpen();
-			bool isReadOnly();
-			long getPosition();
-			void seek(long pos);
-			char readByte();
-			long readLong();
-			short readShort();
-			size_t writeByte(char& c);
-			size_t writeShort(short& s);
+	private:
+		bool openRead();
+		bool openWrite();
 
-		public:
-			FileHandle(const std::string path, bool readOnly);
-			~FileHandle();
+	public:
+		//bool isOpen();
+		bool isReadOnly();
+		long getPosition();
+		void seek(long pos);
+		char readByte();
+		long readLong();
+		short readShort();
+		size_t writeByte(char& c);
+		size_t writeShort(short& s);
 
-		private:
-			friend class FsFile;
+	public:
+		FileHandle(const std::string path, bool readOnly);
+		~FileHandle();
 
-		};
-
-	}
+	};
 }

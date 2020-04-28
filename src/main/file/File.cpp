@@ -38,15 +38,14 @@ int File::getLength() {
 
 bool File::setData(vector<char>* src) {
     int size = (int) src->size();
-    ofstream os;
-    os.open(getPath().c_str(), ios::binary);
-    os.write(reinterpret_cast<char*>(&(*src)[0]), size);
-    os.close();
+	auto stream = FileUtil::ofstreamw(getPath(), ios::binary);
+	stream.write(reinterpret_cast<char*>(&(*src)[0]), size);
+    stream.close();
     return true;
 }
 
 bool File::create() {
-	auto fp = fopen(getPath().c_str(), "w");
+	auto fp = FileUtil::fopenw(getPath().c_str(), "w");
 	auto res = fp != nullptr;
 	if (res) fclose(fp);
 	return res;

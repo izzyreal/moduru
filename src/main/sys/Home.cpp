@@ -12,6 +12,7 @@
 #ifdef _WIN32
 #include <Windows.h>
 #include <ShlObj.h>
+#include <codecvt>
 #endif
 
 using namespace moduru::sys;
@@ -24,26 +25,31 @@ using namespace std;
 #endif
 
 #ifdef _WIN32
+
+std::string utf16ToUtf8(const std::wstring& utf16Str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+    return conv.to_bytes(utf16Str);
+}
+
 string Home::get() {
 
-    char path[MAX_PATH];
-    if (SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, path) != S_OK)
+    wchar_t path[MAX_PATH];
+    auto shGetRes = SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, path);
+    if (shGetRes == S_OK)
     {
-        return string(path);
+        return utf16ToUtf8(wstring(path));
     }
     else
     {
         auto homeDrive = string(getenv("HOMEDRIVE"));
         auto homePath = string(getenv("HOMEPATH"));
-        auto oldResult = homeDrive + homePath;
         return homeDrive + homePath;
     }
 }
 #else
 string Home::get() {
     char* home = getpwuid(getuid())->pw_dir;
-    string res = string(home);
-    return res;
-    //return u8"/Users/Izm\u00F8r";
+    return string(home);
 }
 #endif

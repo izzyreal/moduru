@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #include <stdio.h>
 
@@ -19,6 +20,8 @@ namespace moduru::file {
         static bool IsDirectory(string path);
 
         static FILE* fopenw(const string& path, const string& mode);
+        static ifstream ifstreamw(const string& path, int flags);
+        static ofstream ofstreamw(const string& path, int flags);
 
         // Returns path separator used by the OS
         static string getSeparator();
