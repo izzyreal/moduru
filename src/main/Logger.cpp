@@ -18,7 +18,7 @@ Logger Logger::l;
 
 void Logger::setPath(std::string s) {
 	path = s;
-	remove(path.c_str());
+	//remove(path.c_str());
 }
 
 void Logger::log(std::string s) {
