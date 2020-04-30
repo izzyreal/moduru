@@ -44,6 +44,26 @@ FILE* FileUtil::fopenw(const string& path, const string& mode)
 #endif
 }
 
+string FileUtil::getFreeDiskSpaceFormatted(const string& path)
+{
+	struct stat info;
+	
+	stat("C:/Users/Izmar/", &info);
+	auto byteCount = info.st_size;
+
+	int i = 0;
+	const char* units[] = { "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+	while (byteCount > 1024) {
+		byteCount /= 1024;
+		i++;
+	}
+	char buf[10];
+	sprintf(buf, "%.*f %s", i, byteCount, units[i]);
+	auto freeFormatted = string(buf);
+	//return freeFormatted;
+	return "doesn't work yet";
+}
+
 ifstream FileUtil::ifstreamw(const string& path, int flags)
 {
 #ifdef _WIN32

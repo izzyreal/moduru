@@ -23,6 +23,8 @@ namespace moduru::file {
         static ifstream ifstreamw(const string& path, int flags);
         static ofstream ofstreamw(const string& path, int flags);
 
+        static string getFreeDiskSpaceFormatted(const string& path);
+
         // Returns path separator used by the OS
         static string getSeparator();
 
