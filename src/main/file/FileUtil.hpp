@@ -20,8 +20,8 @@ namespace moduru::file {
         static bool IsDirectory(string path);
 
         static FILE* fopenw(const string& path, const string& mode);
-        static ifstream ifstreamw(const string& path, int flags);
-        static ofstream ofstreamw(const string& path, int flags);
+        static ifstream ifstreamw(const string& path, std::ios_base::openmode flags);
+        static ofstream ofstreamw(const string& path, std::ios_base::openmode flags);
 
         static string getFreeDiskSpaceFormatted(const string& path);
 

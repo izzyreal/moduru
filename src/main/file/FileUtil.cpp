@@ -64,7 +64,7 @@ string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 	return "doesn't work yet";
 }
 
-ifstream FileUtil::ifstreamw(const string& path, int flags)
+ifstream FileUtil::ifstreamw(const string& path, std::ios_base::openmode flags)
 {
 #ifdef _WIN32
 	wstring_convert<codecvt_utf8<wchar_t>, wchar_t> strconverter;
@@ -77,7 +77,7 @@ ifstream FileUtil::ifstreamw(const string& path, int flags)
 #endif
 }
 
-ofstream FileUtil::ofstreamw(const string& path, int flags)
+ofstream FileUtil::ofstreamw(const string& path, std::ios_base::openmode flags)
 {
 #ifdef _WIN32
 	wstring_convert<codecvt_utf8<wchar_t>, wchar_t> strconverter;
