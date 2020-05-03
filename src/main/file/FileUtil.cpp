@@ -20,7 +20,7 @@
 #include <dirent.h>
 #endif
 
-#include <Logger.hpp>
+#include <sys/stat.h>
 
 using namespace moduru::file;
 using namespace std;
