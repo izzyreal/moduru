@@ -24,13 +24,23 @@ BMFParser::BMFParser(string fontPath) {
 	}
 
 	if (data != NULL) {
+		MLOG("BMFParser::BMFParser() data != NULL, will attempt to free it");
 		free(data);
+	}
+	else {
+		MLOG("BMFParser::BMFParser() data == NULL, no attempt to free it");
 	}
 
 	string bmpFileName = loadedFont.pages[0].name;
+
+	MLOG("BMFParser::BMFParser() bmpFileName set to " + bmpFileName);
+
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
+	MLOG("BMFParser::BMFParser() bmpFileName set to " + bmpFileName + " after trimming the string to loadedFont.pages[0].length");
 	string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
+	MLOG("BMFParser::BMFParser() fontDir: " + fontDir);
 	atlas = BMPAsBoolArrays(fontDir + bmpFileName);
+	MLOG("BMFParser::BMFParser() atlas loaded correctly");
 }
 
 void BMFParser::OrderCharsByID(std::vector<bmfont_char>* chars) {
