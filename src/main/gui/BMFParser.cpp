@@ -30,7 +30,7 @@ BMFParser::BMFParser(string fontPath) {
 	string bmpFileName = loadedFont.pages[0].name;
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
 	string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
-	atlas = BMPAsBoolArrays(fontDir + bmpFileName);
+	atlas = BMPAsBoolArrays(fontDir + file::FileUtil::getSeparator() + bmpFileName);
 }
 
 void BMFParser::OrderCharsByID(std::vector<bmfont_char>* chars) {
@@ -227,7 +227,7 @@ bmfont BMFParser::getLoadedFont() {
 	return loadedFont;
 }
 
-std::vector<std::vector<bool> > BMFParser::getAtlas() {
+std::vector<std::vector<bool>> BMFParser::getAtlas() {
 	return atlas;
 }
 
