@@ -5,31 +5,21 @@
 #include <memory>
 #include <thirdp/any.hpp>
 
-namespace moduru {
+namespace moduru::observer
+{
+	class Observable
+	{
 
-	namespace observer {
+	public:
+		virtual void notifyObservers();
+		virtual void notifyObservers(nonstd::any a);
+		void addObserver(moduru::observer::Observer* o);
+		void deleteObservers();
+		void deleteObserver(moduru::observer::Observer* o);
+		int countObservers();
 
-		class Observable
-		{
+	private:
+		std::vector<moduru::observer::Observer*> observers;
 
-		public:
-			virtual void notifyObservers();
-			virtual void notifyObservers(nonstd::any a);
-			void setChanged();
-			void addObserver(moduru::observer::Observer* o);
-			void deleteObservers();
-			void deleteObserver(moduru::observer::Observer* o);
-			int countObservers();
-			
-		public:
-			Observable();
-
-		protected:
-			bool changed{ false };
-
-		private:
-			std::vector<moduru::observer::Observer*> observers{};
-
-		};
-	}
+	};
 }

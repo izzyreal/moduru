@@ -3,29 +3,34 @@
 using namespace moduru::observer;
 using namespace std;
 
-Observable::Observable() {
-}
-
-void Observable::setChanged() {
-	changed = true;
-}
-
-int Observable::countObservers() {
+int Observable::countObservers()
+{
 	return (int)(observers.size());
 }
 
-void Observable::notifyObservers() {
+void Observable::notifyObservers()
+{
 	notifyObservers(nullptr);
 }
 
-void Observable::notifyObservers(nonstd::any arg) {
+void Observable::notifyObservers(nonstd::any arg)
+{
 	for (auto& a : observers)
+	{
 		a->update(this, arg);
+	}
 }
 
-void Observable::addObserver(moduru::observer::Observer* o) {
+void Observable::addObserver(moduru::observer::Observer* o)
+{
 	for (auto& obs : observers)
-		if (obs == o) return;
+	{
+		if (obs == o)
+		{
+			return;
+		}
+	}
+
 	observers.push_back(o);
 }
 
@@ -37,8 +42,11 @@ void Observable::deleteObserver(moduru::observer::Observer* o) {
 	}
 
 	int counter = 0;
-	for (auto& o1 : observers) {
-		if (o1 == o) {
+	
+	for (auto& o1 : observers)
+	{
+		if (o1 == o)
+		{
 			observers.erase(observers.begin() + counter);
 			break;
 		}
@@ -46,6 +54,7 @@ void Observable::deleteObserver(moduru::observer::Observer* o) {
 	}
 }
 
-void Observable::deleteObservers() {
+void Observable::deleteObservers()
+{
 	observers.clear();
 }
