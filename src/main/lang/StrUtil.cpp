@@ -43,33 +43,61 @@ string StrUtil::toUpper(string str) {
 	return res;
 }
 
-string StrUtil::toLower(string str) {
+string StrUtil::toLower(string str)
+{
 	string res = str;
+	
 	for (int i = 0; i < res.length(); i++)
+	{
 		res[i] = tolower(res[i]);
+	}
+
 	return res;
 }
 
-string StrUtil::padLeft(string str, string pad, int size) {
+string StrUtil::padLeft(string str, string pad, int size)
+{
+	if (str.length() >= size)
+	{
+		return str;
+	}
+
 	string result = "";
-	for (int i = 0; i < size - str.size(); i++) {
+
+	for (int i = 0; i < size - str.size(); i++)
+	{
 		result.append(pad);
 	}
+	
 	int counter = 0;
-	for (int i = size - static_cast<int>(str.size()); i < size; i++) {
+	
+	for (int i = size - static_cast<int>(str.size()); i < size; i++)
+	{
 		result.append(str.substr(counter++, 1));
 	}
+	
 	return result;
 };
 
-string StrUtil::padRight(string str, string pad, int size) {
+string StrUtil::padRight(string str, string pad, int size)
+{
+	if (str.length() >= size)
+	{
+		return str;
+	}
+
 	string result = "";
-	for (int i = 0; i < str.size(); i++) {
+	
+	for (int i = 0; i < str.size(); i++)
+	{
 		result.append(str.substr(i, 1));
 	}
-	for (int i = static_cast<int>(str.size()); i < size; i++) {
+	
+	for (int i = static_cast<int>(str.size()); i < size; i++)
+	{
 		result.append(pad);
 	}
+	
 	return result;
 }
 
