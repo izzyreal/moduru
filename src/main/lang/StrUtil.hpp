@@ -2,31 +2,26 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+namespace moduru::lang
+{
+	class StrUtil
+	{
+	public:
+		static std::string padLeft(std::string str, std::string pad, int size);
+		static std::string padRight(std::string str, std::string pad, int size);
+		static std::string trim(const std::string& str);
+		static std::string toUpper(std::string str);
+		static std::string toLower(std::string str);
+		static bool eqIgnoreCase(std::string s1, std::string s2);
+		static std::string replaceAll(std::string str, char c, std::string replacement);
+		static std::string TrimDecimals(const std::string& str, int decimalCount);
+		static std::string TrimDecimals(float f, int decimalCount);
 
-namespace moduru {
+		static bool hasEnding(std::string const& fullString, std::string const& ending);
 
-	namespace lang {
+		static std::string subStr(const std::string str, int start, int end);
+		static int cntByte(unsigned char cChar);
 
-		class StrUtil {
-
-		public:
-			static string padLeft(string str, string pad, int size);
-			static string padRight(string str, string pad, int size);
-			static string trim(const string& str);
-			static string toUpper(string str);
-			static string toLower(string str);
-			static bool eqIgnoreCase(string s1, string s2);
-			static string replaceAll(string str, char c, string replacement);
-			static string TrimDecimals(const string& str, int decimalCount);
-			static string TrimDecimals(float f, int decimalCount);
-			
-			static bool hasEnding(string const &fullString, string const &ending);
-
-			static string subStr(const string str, int start, int end);
-			static int cntByte(unsigned char cChar);
-
-			static vector<string> split(const string& s, char c);
-		};
-	}
+		static std::vector<std::string> split(const std::string& s, char c);
+	};
 }

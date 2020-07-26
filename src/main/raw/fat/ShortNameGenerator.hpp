@@ -3,32 +3,31 @@
 #include <set>
 #include <string>
 
-using namespace std;
-
-namespace moduru::raw::fat {
+namespace moduru::raw::fat
+{
 	class ShortName;
 }
 
-namespace moduru::raw::fat {
-
+namespace moduru::raw::fat
+{
 	class ShortNameGenerator
 	{
 
 	private:
-		set<string> usedNames;
+		std::set<std::string> usedNames;
 
 	public:
 		static bool validChar(char toTest);
 		static bool isSkipChar(char c);
 
 	private:
-		string tidyString(string dirty);
-		bool cleanString(string s);
-		string stripLeadingPeriods(string str);
+		std::string tidyString(std::string dirty);
+		bool cleanString(std::string s);
+		std::string stripLeadingPeriods(std::string str);
 
 	public:
-		ShortName generateShortName(const string& longFullName);
+		ShortName generateShortName(const std::string& longFullName);
 
-		ShortNameGenerator(const set<string>& usedNames);
+		ShortNameGenerator(const std::set<std::string>& usedNames);
 	};
 }

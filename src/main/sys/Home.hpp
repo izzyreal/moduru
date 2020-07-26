@@ -2,17 +2,12 @@
 
 #include <string>
 
-using namespace std;
+namespace moduru::sys
+{
+	class Home
+	{
+	public:
+		static std::string get();
 
-namespace moduru {
-	namespace sys {
-
-		class Home {
-
-		public:
-			static string get();
-
-		};
-
-	}
+	};
 }
