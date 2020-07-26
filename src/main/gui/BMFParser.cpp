@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <gui/bitmap.hpp>
+
 #include <Logger.hpp>
 
 using namespace moduru;
@@ -30,7 +32,28 @@ BMFParser::BMFParser(string fontPath) {
 	string bmpFileName = loadedFont.pages[0].name;
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
 	string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
-	atlas = BMPAsBoolArrays(fontDir + file::FileUtil::getSeparator() + bmpFileName);
+
+	Bitmap image;
+	vector<vector<Pixel>> bmp;
+
+	image.open(fontDir + file::FileUtil::getSeparator() + bmpFileName);
+
+	bool bmpValid = image.isImage();
+
+	if (bmpValid)
+	{
+		bmp = image.toPixelMatrix();
+	}
+
+	for (auto& row : bmp)
+	{
+		vector<bool> boolRow;
+		for (auto& column : row)
+		{
+			boolRow.push_back(!column.on);
+		}
+		atlas.push_back(boolRow);
+	}
 }
 
 void BMFParser::OrderCharsByID(std::vector<bmfont_char>* chars) {
@@ -139,68 +162,6 @@ bool BMFParser::GetBMFontData(const char* pBinary, size_t fileSize, bmfont* pBMF
 		}
 	}
 	return true;
-}
-
-std::vector<std::vector<bool>> BMFParser::BMPAsBoolArrays(std::string filePath) {
-
-	std::vector<std::vector<bool>> result;
-
-	const int infosize = 54;
-
-	FILE* f = moduru::file::FileUtil::fopenw(filePath, "rb");
-	
-	if (f == nullptr) {
-		return result;
-	}
-
-	unsigned char info[infosize];
-	fread(info, sizeof(unsigned char), infosize, f);
-
-	std::vector<unsigned char> buf = { info[10], info[11], info[12], info[13] };
-	uint32_t n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int imageDataOffset = (int)n;
-
-	buf = { info[18], info[19], info[20], info[21] };
-	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int width = n;
-
-	buf = { info[22], info[23], info[24], info[25] };
-	n = (buf[0]) | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-	int height = n;
-	int imageSize = width * height;
-
-	result = std::vector < std::vector <bool>>(width, std::vector<bool>(height));
-
-	fseek(f, imageDataOffset, 0);
-
-	vector<unsigned char> tempdata(imageSize / 8);
-	fread(&tempdata[0], sizeof(unsigned char), imageSize, f);
-	fclose(f);
-
-	int xcounter = 0;
-	int ycounter = 0;
-
-	int pixelcounter = 0;
-	int bitcounter = 7;
-	int charcounter = 0;
-
-	while (pixelcounter < imageSize) {
-		if (bitcounter < 0) {
-			bitcounter = 7;
-			charcounter++;
-		}
-		if (xcounter >= width) {
-			xcounter = 0;
-			ycounter++;
-		}
-
-		if ((tempdata.at(charcounter) >> bitcounter) & 1) result[xcounter][height - ycounter] = true;
-
-		bitcounter--;
-		xcounter++;
-		pixelcounter++;
-	}
-	return result;
 }
 
 char* BMFParser::GetFileData(string filePath, size_t* pSize)
