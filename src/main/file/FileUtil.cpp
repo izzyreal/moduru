@@ -16,6 +16,10 @@
 #if defined (__APPLE__)
 #include <sys/dirent.h>
 #include <sys/dir.h>
+#include <sys/param.h>
+#include <sys/mount.h>
+#include <pwd.h>
+#include <unistd.h>
 #endif
 
 #if defined (__linux__)
@@ -46,14 +50,25 @@ FILE* FileUtil::fopenw(const string& path, const string& mode)
 #endif
 }
 
+uint64_t getFreeSpace()
+{
+    struct statfs stat;
+    struct passwd *pw = getpwuid(getuid());
+    if ( NULL != pw && 0 == statfs(pw->pw_dir, &stat) )
+    {
+        uint64_t freeBytes = (uint64_t)stat.f_bavail * stat.f_bsize;
+        return freeBytes;
+    }
+    return 0ULL;
+}
+
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
+    printf("Hello\n");
 	size_t byteCount = 0;
-
+    
 #ifdef _WIN32
-	MLOG("path: " + path);
-	
-	if (path.length() < 3)
+    if (path.length() < 3)
 	{
 		return "?";
 	}
@@ -77,10 +92,7 @@ string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 		return "?";
 	}
 #else
-	struct stat info;
-	
-	stat(moduru::sys::Home::get().c_str(), &info);
-	byteCount = info.st_size;
+    byteCount = getFreeSpace();
 #endif
 	int i = 0;
 	const char* units[] = { "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
