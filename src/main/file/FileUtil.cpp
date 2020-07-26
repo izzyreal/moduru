@@ -1,8 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _HAS_STD_BYTE 0
 
-#include <file/FileUtil.hpp>
+#include <Logger.hpp>
 
+#include <file/FileUtil.hpp>
+#include <sys/Home.hpp>
 
 #if defined (_WIN32)
 #include <thirdp/dirent.h>
@@ -46,22 +48,53 @@ FILE* FileUtil::fopenw(const string& path, const string& mode)
 
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
+	size_t byteCount = 0;
+
+#ifdef _WIN32
+	MLOG("path: " + path);
+	
+	if (path.length() < 3)
+	{
+		return "?";
+	}
+	
+	auto pathToCheck = path.substr(0, 3);
+
+	wstring filePathW;
+	filePathW.resize(pathToCheck.size());
+	int newPathSize = MultiByteToWideChar(CP_UTF8, 0, pathToCheck.c_str(), pathToCheck.length(), const_cast<wchar_t*>(filePathW.c_str()), pathToCheck.length());
+	filePathW.resize(newPathSize);
+
+	BOOL fResult;
+	DWORD dwSectPerClust, dwBytesPerSect, dwFreeClusters, dwTotalClusters;
+	fResult = GetDiskFreeSpaceW(filePathW.c_str(), &dwSectPerClust, &dwBytesPerSect, &dwFreeClusters, &dwTotalClusters);
+
+	if (fResult)
+	{
+		byteCount = (__int64) dwSectPerClust * dwBytesPerSect * dwFreeClusters;
+	}
+	else {
+		return "?";
+	}
+#else
 	struct stat info;
 	
-	stat("C:/Users/Izmar/", &info);
-	auto byteCount = info.st_size;
-
+	stat(moduru::sys::Home::get().c_str(), &info);
+	byteCount = info.st_size;
+#endif
 	int i = 0;
 	const char* units[] = { "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-	while (byteCount > 1024) {
+	
+	while (byteCount > 1024)
+	{
 		byteCount /= 1024;
 		i++;
 	}
+
 	char buf[10];
-	sprintf(buf, "%.*f %s", i, byteCount, units[i]);
+	sprintf(buf, "%.*zu%s", i, byteCount, units[i]);
 	auto freeFormatted = string(buf);
-	//return freeFormatted;
-	return "doesn't work yet";
+	return freeFormatted;
 }
 
 ifstream FileUtil::ifstreamw(const string& path, std::ios_base::openmode flags)
