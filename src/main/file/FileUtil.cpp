@@ -16,17 +16,18 @@
 #if defined (__APPLE__)
 #include <sys/dirent.h>
 #include <sys/dir.h>
-#include <sys/param.h>
-#include <sys/mount.h>
-#include <pwd.h>
-#include <unistd.h>
 #endif
 
 #if defined (__linux__)
 #include <dirent.h>
 #endif
 
-#include <sys/stat.h>
+#if defined(__APPLE__) || defined (__linux__)
+#include <sys/param.h>
+#include <sys/mount.h>
+#include <pwd.h>
+#include <unistd.h>
+#endif
 
 using namespace moduru::file;
 using namespace std;
@@ -50,6 +51,7 @@ FILE* FileUtil::fopenw(const string& path, const string& mode)
 #endif
 }
 
+#ifndef _WIN32
 uint64_t getFreeSpace()
 {
     struct statfs stat;
@@ -61,6 +63,7 @@ uint64_t getFreeSpace()
     }
     return 0ULL;
 }
+#endif
 
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
