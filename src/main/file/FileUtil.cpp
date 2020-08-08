@@ -67,7 +67,6 @@ uint64_t getFreeSpace()
 
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
-    printf("Hello\n");
 	size_t byteCount = 0;
     
 #ifdef _WIN32
