@@ -15,7 +15,7 @@ namespace moduru::lang
 		static bool eqIgnoreCase(std::string s1, std::string s2);
 		static std::string replaceAll(std::string str, char c, std::string replacement);
 		static std::string TrimDecimals(const std::string& str, int decimalCount);
-		static std::string TrimDecimals(float f, int decimalCount);
+		static std::string TrimDecimals(double d, int decimalCount);
 
 		static bool hasEnding(std::string const& fullString, std::string const& ending);
 

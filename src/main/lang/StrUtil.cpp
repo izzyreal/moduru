@@ -128,8 +128,8 @@ string StrUtil::TrimDecimals(const string& str, int count) {
 	return str;
 }
 
-string StrUtil::TrimDecimals(float f, int count) {
-	return TrimDecimals(to_string(f), count);
+string StrUtil::TrimDecimals(double d, int count) {
+	return TrimDecimals(to_string(d), count);
 }
 
 bool StrUtil::hasEnding(std::string const &fullString, std::string const &ending) {
