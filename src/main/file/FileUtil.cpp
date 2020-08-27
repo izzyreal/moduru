@@ -157,6 +157,9 @@ bool FileUtil::Exists(string path)
 	}
 #endif
 
+	if (fp != NULL)
+		fclose(fp);
+
 	return fp != NULL;
 }
 
