@@ -8,11 +8,12 @@
 #endif
 
 using namespace std;
+using namespace std::chrono;
 using namespace moduru;
 
-long System::nanoTime() {
-	auto nanoTime = chrono::high_resolution_clock::now();
-	return (long) chrono::duration_cast<chrono::nanoseconds>(nanoTime.time_since_epoch()).count();
+uint64_t System::currentTimeMillis()
+{
+	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 #if defined (__APPLE__) || defined (__linux__)
