@@ -20,6 +20,7 @@
 
 #if defined (__linux__)
 #include <dirent.h>
+#include <sys/vfs.h>
 #endif
 
 #if defined(__APPLE__) || defined (__linux__)
