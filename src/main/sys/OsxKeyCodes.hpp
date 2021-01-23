@@ -8,10 +8,10 @@ class OsxKeyCodes
 {
 public:
     static inline std::map<int, std::string> keyCodeNames = {
-        { 107, "F1"  },
-        { 113, "F2"  },
-        { 160, "F3"  },
-        { 131, "F4"  },
+        { 122, "F1"  },
+        { 120, "F2"  },
+        {  99, "F3"  },
+        { 118, "F4"  },
         { 96 , "F5"  },
         { 97 , "F6"  },
         { 98 , "F7"  },
