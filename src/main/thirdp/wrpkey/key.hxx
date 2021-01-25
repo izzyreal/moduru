@@ -168,6 +168,3 @@ namespace WonderRabbitProject
   }
 }
 
-#ifndef WRP_NO_KEY_WRITER
-  #include "key/writer.hxx"
-#endif
