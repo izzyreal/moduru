@@ -3,7 +3,7 @@
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
 #elif defined _WIN32
-// Include Windows header that has VK_ info
+#include <WinUser.h>
 #elif defined __linux__
 #include <X11/keysymdef.h>
 #endif
@@ -99,7 +99,7 @@ public:
         { kVK_ANSI_H, "h" },
         { kVK_ANSI_J, "j" },
         { kVK_ANSI_K, "k" },
-        { kVK_ANSI_L, "l" },
+        { kVK_ANSI_L, "l (letter L)" },
         { kVK_ANSI_Z, "z" },
         { kVK_ANSI_X, "x" },
         { kVK_ANSI_C, "c" },
@@ -129,106 +129,107 @@ public:
         
 #elif defined _WIN32
 
-        { 0x70, "F1"  },
-        { 0x71, "F2"  },
-        { 0x72, "F3"  },
-        { 0x73, "F4"  },
-        { 0x74, "F5"  },
-        { 0x75 , "F6"  },
-        { 0x76, "F7"  },
-        { 0x77, "F8"  },
-        { 0x78, "F9"  },
-        { 0x79, "F10" },
-        { 0x7A, "F11" },
-        { 0x7B, "F12" },
+        { VK_F1, "F1"  },
+        { VK_F2, "F2"  },
+        { VK_F3, "F3"  },
+        { VK_F4, "F4"  },
+        { VK_F5, "F5"  },
+        { VK_F6 , "F6"  },
+        { VK_F7, "F7"  },
+        { VK_F8, "F8"  },
+        { VK_F9, "F9"  },
+        { VK_F10, "F10" },
+        { VK_F11, "F11" },
+        { VK_F12, "F12" },
         
-        { 0x1B, "esc" },
-        { 0xC0, "` (backtick)" },
-        { 0x09, "tab" },
-        { 0x14, "caps lock" },
-        { 0x10, "left shift" },
-        { 0x11, "left control" },
-        { 0x12, "left alt" },
-        { 0xBD, "minus" },
-        { 0xBB, "equals" },
-        { 0x2D, "insert" },
-        { 0x2E, "delete" },
-        { 0xDB, "{ (left bracket)" },
-        { 0xDD, "} (right bracket)" },
-        { 0xDC, "\\ (backslash)" },
-        { 0xBA, "; (semicolon)" },
-        { 0xDE, "' (quote)" },
-        { 0x0D, "return" },
-        { 0xBC, ", (comma)" },
-        { 0xBE, ". (period)" },
-        { 0xBF, "/ (slash)" },
-        { 0x20, "space" },
+        { VK_ESCAPE, "esc" },
+        { VK_TAB, "tab" },
+        { VK_CAPITAL, "caps lock" },
+        { VK_LSHIFT, "left shift" },
+        { VK_LCONTROL, "left control" },
+        { VK_LMENU, "left alt" },
+        { VK_OEM_MINUS, "minus" },
+        { VK_OEM_PLUS, "equals" },
+        { VK_INSERT, "insert" },
+        { VK_DELETE, "delete" },
+        { VK_RETURN, "return" },
+        { VK_OEM_COMMA, ", (comma)" },
+        { VK_OEM_PERIOD, ". (period)" },
+        { VK_SPACE, "space" },
+
+        { VK_OEM_1, "; (semicolon)" },
+        { VK_OEM_2, "/ (slash)" },
+        { VK_OEM_3, "` (backtick)" },
+        { VK_OEM_4, "{ (left bracket)" },
+        { VK_OEM_6, "} (right bracket)" },
+        { VK_OEM_5, "\\ (backslash)" },
+        { VK_OEM_7, "' (quote)" },
+
+        { VK_NUMPAD0, "Keypad 0" },
+        { VK_NUMPAD1, "Keypad 1" },
+        { VK_NUMPAD2, "Keypad 2" },
+        { VK_NUMPAD3, "Keypad 3" },
+        { VK_NUMPAD4, "Keypad 4" },
+        { VK_NUMPAD5, "Keypad 5" },
+        { VK_NUMPAD6, "Keypad 6" },
+        { VK_NUMPAD7, "Keypad 7" },
+        { VK_NUMPAD8, "Keypad 8" },
+        { VK_NUMPAD9, "Keypad 9" },
         
-        { 0x60, "Keypad 0" },
-        { 0x61, "Keypad 1" },
-        { 0x62, "Keypad 2" },
-        { 0x63, "Keypad 3" },
-        { 0x64, "Keypad 4" },
-        { 0x65, "Keypad 5" },
-        { 0x66, "Keypad 6" },
-        { 0x67, "Keypad 7" },
-        { 0x68, "Keypad 8" },
-        { 0x69, "Keypad 9" },
+        { '0', "0" },
+        { '1', "1" },
+        { '2', "2" },
+        { '3', "3" },
+        { '4', "4" },
+        { '5', "5" },
+        { '6', "6" },
+        { '7', "7" },
+        { '8', "8" },
+        { '9', "9" },
         
-        { 0x30, "0" },
-        { 0x31, "1" },
-        { 0x32, "2" },
-        { 0x33, "3" },
-        { 0x34, "4" },
-        { 0x35, "5" },
-        { 0x36, "6" },
-        { 0x37, "7" },
-        { 0x38, "8" },
-        { 0x39, "9" },
+        { 'A', "a" },
+        { 'B', "b" },
+        { 'C', "c" },
+        { 'D', "d" },
+        { 'E', "e" },
+        { 'F', "f" },
+        { 'G', "g" },
+        { 'H', "h" },
+        { 'I', "i" },
+        { 'J', "j" },
+        { 'K', "k" },
+        { 'L', "l (letter L)" },
+        { 'M', "m" },
+        { 'N', "n" },
+        { 'O', "o" },
+        { 'P', "p" },
+        { 'Q', "q" },
+        { 'R', "r" },
+        { 'S', "s" },
+        { 'T', "t" },
+        { 'U', "u" },
+        { 'V', "v" },
+        { 'W', "w" },
+        { 'X', "x" },
+        { 'Y', "y" },
+        { 'Z', "z" },
         
-        { 0x41, "a" },
-        { 0x42, "b" },
-        { 0x43, "c" },
-        { 0x44, "d" },
-        { 0x45, "e" },
-        { 0x46, "f" },
-        { 0x47, "g" },
-        { 0x48, "h" },
-        { 0x49, "i" },
-        { 0x4A, "j" },
-        { 0x4B, "k" },
-        { 0x4C, "l" },
-        { 0x4D, "m" },
-        { 0x4E, "n" },
-        { 0x4F, "o" },
-        { 0x50, "p" },
-        { 0x51, "q" },
-        { 0x52, "r" },
-        { 0x53, "s" },
-        { 0x54, "t" },
-        { 0x55, "u" },
-        { 0x56, "v" },
-        { 0x57, "w" },
-        { 0x58, "x" },
-        { 0x59, "y" },
-        { 0x5A, "z" },
+        { VK_LEFT, "cursor left"  },
+        { VK_RIGHT, "cursor right" },
+        { VK_UP, "cursor up"    },
+        { VK_DOWN, "cursor down"  },
         
-        { 0x25, "cursor left"  },
-        { 0x27, "cursor right" },
-        { 0x26, "cursor up"    },
-        { 0x28, "cursor down"  },
+        { VK_DECIMAL, "keypad decimal" },
+        { VK_MULTIPLY, "keypad multiply" },
+        { VK_ADD, "keypad plus" },
+        { VK_CLEAR, "keypad clear" },
+        { VK_DIVIDE, "keypad divide" },
+        { VK_SUBTRACT, "keypad minus" },
         
-        { 0x6E, "keypad decimal" },
-        { 0x6A, "keypad multiply" },
-        { 0x6B, "keypad plus" },
-        { 0x0C, "keypad clear" },
-        { 0x6F, "keypad divide" },
-        { 0x6D, "keypad minus" },
-        
-        { 0x24, "home" },
-        { 0x21, "page up" },
-        { 0x23, "end" },
-        { 0x22, "page down" }
+        { VK_HOME, "home" },
+        { VK_PRIOR, "page up" },
+        { VK_END, "end" },
+        { VK_NEXT, "page down" }
         
 #elif defined __linux__
 
@@ -288,7 +289,7 @@ public:
         { XK_i, "i" },
         { XK_j, "j" },
         { XK_k, "k" },
-        { XK_l, "l" },
+        { XK_l, "l (letter L)" },
         { XK_m, "m" },
         { XK_n, "n" },
         { XK_o, "o" },
@@ -317,27 +318,5 @@ public:
         
     };
     
-private:
-    template<typename A, typename B>
-    static std::pair<B,A> flip_pair(const std::pair<A,B> &p)
-    {
-        return std::pair<B,A>(p.second, p.first);
-    }
-    
-    template<typename A, typename B>
-    static std::map<B,A> flip_map(const std::map<A,B> &src)
-    {
-        std::map<B,A> dst;
-        transform(src.begin(), src.end(), inserter(dst, dst.begin()),
-                  flip_pair<A,B>);
-        return dst;
-    }
-    
-public:
-    static const std::map<std::string, int> nameKeyCodes()
-    {
-        static auto flippedMap = flip_map(keyCodeNames);
-        return flippedMap;
-    }
 };
 }
