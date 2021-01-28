@@ -16,7 +16,7 @@ namespace moduru::sys
 
 class KeyCodes
 {
-private:
+public:
     enum moduruKeyCodes {
         MVK_F1,
         MVK_F2,
@@ -237,7 +237,6 @@ private:
         { MVK_PageDown, "page down" }
     };
 
-public:
     static inline std::map<int, std::string> keyCodeNames = {
         
 #ifdef __APPLE__
