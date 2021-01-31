@@ -4,6 +4,10 @@ project(moduru)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC")
 
+if(DEFINED ENV{APPLE_M1})
+  set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "")
+endif()
+
 if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
     include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 else()
@@ -58,5 +62,8 @@ foreach(_source IN ITEMS ${_source_list_test})
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
 
-add_executable(moduru-tests ${_source_list_test})
-target_link_libraries(moduru-tests moduru)
+if(NOT DEFINED ENV{APPLE_M1})
+  add_executable(moduru-tests ${_source_list_test})
+  target_link_libraries(moduru-tests moduru)
+endif()
+
