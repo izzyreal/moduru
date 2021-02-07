@@ -98,6 +98,3 @@ bool FsNode::renameTo(std::string newName) {
 	
 	return false;
 }
-
-FsNode::~FsNode() {
-}

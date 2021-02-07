@@ -139,7 +139,3 @@ bool Directory::del() {
 	return FsNode::del();
 #endif
 }
-
-Directory::~Directory() {
-
-}

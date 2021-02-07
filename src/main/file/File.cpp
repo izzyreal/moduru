@@ -134,6 +134,3 @@ bool File::getData(vector<char>* dest) {
 		return false;
 	}
 }
-
-File::~File() {
-}
