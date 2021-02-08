@@ -5,24 +5,36 @@
 using namespace moduru;
 using namespace std;
 
-vector<char> VecUtil::CopyOfRange(vector<char>* src, int offset, int endOffset) {
-	return vector<char>(src->begin() + offset, src->begin() + endOffset);
+vector<char> VecUtil::CopyOfRange(const vector<char>& src, int offset, int endOffset)
+{
+	return vector<char>(begin(src) + offset, begin(src) + endOffset);
 }
 
-vector<double> CopyOf(vector<double> src, int newLength) {
-	while (src.size() < newLength) {
-		src.push_back(0);
-	}
+vector<double> CopyOf(const vector<double>& src, int newLength)
+{
+    if (src.size() < newLength)
+    {
+        vector<double> srcCopy(begin(src), end(src));
+        while (srcCopy.size() < newLength)
+            srcCopy.push_back(0);
+        return srcCopy;
+    }
+    
 	return vector<double>(src.begin(), src.begin() + newLength);
 }
 
-vector<short> VecUtil::BytesToShorts(vector<char> src) {
-	if (src.size() == 0 || src.size() % 2 != 0) return vector<short>(0);
-	int length = (int) (src.size()) / 2;
+vector<short> VecUtil::BytesToShorts(vector<char> src)
+{
+	if (src.size() == 0 || src.size() % 2 != 0)
+        return vector<short>(0);
+	
+    int length = (int) (src.size()) / 2;
 	auto res = vector<short>(length);
 	int charCounter = 0;
 	auto pair = vector<char>(2);
-	for (int i = 0; i < length; i++) {
+
+    for (int i = 0; i < length; i++)
+    {
 		pair[0] = src[charCounter++];
 		pair[1] = src[charCounter++];
 		res[i] = moduru::file::ByteUtil::bytes2short(pair);

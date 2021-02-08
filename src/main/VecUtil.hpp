@@ -10,8 +10,8 @@ namespace moduru {
 	class VecUtil {
 
 	public:
-		static std::vector<char> CopyOfRange(std::vector<char>* src, int offset, int length);
-		static std::vector<double> CopyOf(std::vector<double> src, int newLength);
+		static std::vector<char> CopyOfRange(const std::vector<char>& src, int offset, int length);
+		static std::vector<double> CopyOf(const std::vector<double>& src, int newLength);
 
 		static std::vector<short> BytesToShorts(std::vector<char> src);
 		static bool Equals(std::vector<char> a, std::vector<char> b);

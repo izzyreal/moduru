@@ -191,12 +191,32 @@ int StrUtil::cntByte(unsigned char cChar)
 	return iByte;
 }
 
-vector<string> StrUtil::split(const string& s, char c) {
-	stringstream ss = stringstream(s);
-	std::string segment;
-	std::vector<std::string> seglist;
+string ltrim(const string& s, char c)
+{
+    size_t start = s.find_first_not_of(c);
+    return (start == std::string::npos) ? "" : s.substr(start);
+}
+ 
+string rtrim(const string& s, char c)
+{
+    size_t end = s.find_last_not_of(c);
+    return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+}
+ 
+string trim_by_c(const string& s, char c)
+{
+    return ltrim(rtrim(s, c), c);
+}
 
-	while (std::getline(ss, segment, c))
+vector<string> StrUtil::split(const string& s, char c)
+{
+    auto str = trim_by_c(s, c);
+	stringstream ss = stringstream(str);
+	string segment;
+	vector<string> seglist;
+
+	while (getline(ss, segment, c))
 		seglist.push_back(segment);
-	return seglist;
+
+    return seglist;
 }
