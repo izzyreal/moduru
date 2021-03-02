@@ -23,7 +23,7 @@ using namespace moduru::file;
 
 using namespace std;
 
-Directory::Directory(string const path, Directory* const parent)
+Directory::Directory(string const path, shared_ptr<Directory> parent)
 	: FsNode(path, parent)
 {
 }
@@ -89,7 +89,7 @@ vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
 		shared_ptr<FsNode> child;
 
 		if (childIsDir) {
-			auto directory = make_shared<Directory>(childPath, this);
+			auto directory = make_shared<Directory>(childPath, shared_from_this());
 
 			if (recursive) {
 				auto children = directory->listFiles(true);
@@ -101,7 +101,7 @@ vector<shared_ptr<FsNode>> Directory::listFiles(bool recursive) {
 			child = directory;
 		}
 		else {
-			child = make_shared<File>(childPath, this);
+			child = make_shared<File>(childPath, shared_from_this());
 		}
 		res.push_back(move(child));
 

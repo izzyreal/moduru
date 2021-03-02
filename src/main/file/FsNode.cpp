@@ -14,7 +14,7 @@
 using namespace moduru::file;
 using namespace std;
 
-FsNode::FsNode(std::string const path, Directory* const parent)
+FsNode::FsNode(std::string const path, shared_ptr<Directory> parent)
 	: path(path), parent(parent)
 {
 #if defined(_WIN32)
@@ -39,7 +39,7 @@ FsNode::FsNode(std::string const path, Directory* const parent)
 #endif
 }
 
-Directory* const FsNode::getParent() {
+shared_ptr<Directory> const FsNode::getParent() {
 	return parent;
 }
 
@@ -48,7 +48,6 @@ bool FsNode::exists() {
 }
 
 bool FsNode::del() {
-	//if (path.find("Users") == string::npos || path.find("vMPC") == string::npos || path.find("Stores") == string::npos || path.find("MPC2000XL") == string::npos) return false;
 	if (path.find("vMPC") == string::npos) {
 		return false;
 	}

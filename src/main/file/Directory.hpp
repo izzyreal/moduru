@@ -9,7 +9,7 @@ namespace moduru::file
 {
 
 class Directory final
-: public FsNode
+: public FsNode, public std::enable_shared_from_this<Directory>
 {
     
 public:
@@ -22,7 +22,7 @@ public:
     bool del() override;
     
 public:
-    Directory(std::string const path, Directory* const parent);
+    Directory(std::string const path, std::shared_ptr<Directory> parent);
     
 };
 }

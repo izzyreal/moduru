@@ -12,7 +12,7 @@
 using namespace moduru::file;
 using namespace std;
 
-File::File(string const path, Directory* const parent)
+File::File(string const path, shared_ptr<Directory> parent)
 	: FsNode(path, parent)
 {
 }

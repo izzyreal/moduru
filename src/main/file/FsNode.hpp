@@ -12,14 +12,14 @@ class FsNode {
     
 private:
     std::string path;
-    Directory* const parent;
+    std::shared_ptr<Directory> parent;
     std::shared_ptr<std::string> shortName;
     
 public:
     const std::string getPath();
     const std::string getName();
     const std::string getNameWithoutExtension();
-    Directory* const getParent();
+    std::shared_ptr<Directory> const getParent();
     
 public:
     virtual int getLength() { return 0; }
@@ -37,7 +37,7 @@ public:
     bool exists();
     
 public:
-    FsNode(std::string const path, Directory* const parent);
+    FsNode(std::string const path, std::shared_ptr<Directory> parent);
     
 };
 }

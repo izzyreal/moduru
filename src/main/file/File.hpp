@@ -39,7 +39,7 @@ public:
     int getLength() override;
     
 public:
-    File(std::string const path, Directory* const parent);
+    File(std::string const path, std::shared_ptr<Directory> parent);
     
 };
 
