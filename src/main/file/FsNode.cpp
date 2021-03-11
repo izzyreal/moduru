@@ -48,14 +48,14 @@ bool FsNode::exists() {
 }
 
 bool FsNode::del() {
-	if (path.find("vMPC") == string::npos) {
-		return false;
-	}
-	return remove(path.c_str()) == 0;
+    if (path.find("VMPC2000XL") == string::npos)
+        return false;
+    
+    return remove(path.c_str()) == 0;
 }
 
 const std::string FsNode::getPath() {
-	return path;
+    return path;
 }
 
 const std::string FsNode::getNameWithoutExtension() {
@@ -78,7 +78,7 @@ const std::string FsNode::getName() {
 
 bool FsNode::renameTo(std::string newName) {
 	
-	if (path.find("Users") == string::npos || path.find("vMPC") == string::npos || path.find("Stores") == string::npos || path.find("MPC2000XL") == string::npos)
+	if (path.find("VMPC2000XL") == string::npos)
 		return false;
 	
 	auto newPath = std::string(parent->getPath() + FileUtil::getSeparator() + newName);

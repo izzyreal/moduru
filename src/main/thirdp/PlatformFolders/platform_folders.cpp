@@ -217,6 +217,16 @@ std::string getDataHome() {
 #endif
 }
 
+std::string getData() {
+#ifdef _WIN32
+    return GetAppData();
+#elif defined(__APPLE__)
+    return "/Library/Application Support";
+#else
+    return getLinuxFolderDefault("XDG_DATA_HOME", ".local/share");
+#endif
+}
+
 std::string getConfigHome() {
 #ifdef _WIN32
 	return GetAppData();
@@ -224,6 +234,16 @@ std::string getConfigHome() {
 	return getHome()+"/Library/Application Support";
 #else
 	return getLinuxFolderDefault("XDG_CONFIG_HOME", ".config");
+#endif
+}
+
+std::string getConfig() {
+#ifdef _WIN32
+    return GetAppData();
+#elif defined(__APPLE__)
+    return "/Library/Application Support";
+#else
+    return getLinuxFolderDefault("XDG_CONFIG_HOME", ".config");
 #endif
 }
 

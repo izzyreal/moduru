@@ -16,18 +16,16 @@ using namespace moduru::gui;
 
 using namespace std;
 
-BMFParser::BMFParser(string fontPath) {
-
+BMFParser::BMFParser(string fontPath)
+{
 	size_t fileSize = 0;
 	char* data = GetFileData(fontPath.c_str(), &fileSize);
-	if (GetBMFontData(data, fileSize, &loadedFont))
-	{
+	
+    if (GetBMFontData(data, fileSize, &loadedFont))
 		MLOG("Loaded BMFont data correctly.\n");
-	}
-
-	if (data != NULL) {
+	
+	if (data != NULL)
 		free(data);
-	}
 
 	string bmpFileName = loadedFont.pages[0].name;
 	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);

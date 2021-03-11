@@ -63,8 +63,5 @@ foreach(_source IN ITEMS ${_source_list_test})
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
 
-if(NOT DEFINED ENV{APPLE_M1})
-  add_executable(moduru-tests ${_source_list_test})
-  target_link_libraries(moduru-tests moduru)
-endif()
-
+add_executable(moduru-tests ${_source_list_test})
+target_link_libraries(moduru-tests moduru)

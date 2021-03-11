@@ -60,6 +60,8 @@ std::string win32_utf16_to_utf8(const wchar_t* wstr);
  */
 std::string getDataHome();
 
+std::string getData();
+
 /**
  * Retrives the base folder for storing config files.
  * You must add the program name yourself like this:
@@ -71,6 +73,8 @@ std::string getDataHome();
  * @return The base folder for storing config data.
  */
 std::string getConfigHome();
+
+std::string getConfig();
 
 /**
  * Retrives the base folder for storing cache files.
