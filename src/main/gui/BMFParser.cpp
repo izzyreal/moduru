@@ -18,39 +18,60 @@ using namespace std;
 
 BMFParser::BMFParser(string fontPath)
 {
-	size_t fileSize = 0;
-	char* data = GetFileData(fontPath.c_str(), &fileSize);
-	
+    size_t fileSize = 0;
+    char* data = GetFileData(fontPath.c_str(), &fileSize);
+    
     if (GetBMFontData(data, fileSize, &loadedFont))
+        MLOG("Loaded BMFont data correctly.\n");
+    
+    Bitmap image;
+    vector<vector<Pixel>> bmp;
+
+    string bmpFileName = loadedFont.pages[0].name;
+    bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
+    string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
+
+    image.open(fontDir + file::FileUtil::getSeparator() + bmpFileName);
+    
+    bool bmpValid = image.isImage();
+
+    if (bmpValid)
+        bmp = image.toPixelMatrix();
+
+    for (auto& row : bmp)
+    {
+        vector<bool> boolRow;
+
+        for (auto& column : row)
+            boolRow.push_back(!column.on);
+
+        atlas.push_back(boolRow);
+    }
+}
+
+BMFParser::BMFParser(char* fntData, int fntSize, char* bmpData, int bmpSize)
+{
+    if (GetBMFontData(fntData, fntSize, &loadedFont))
 		MLOG("Loaded BMFont data correctly.\n");
-	
-	if (data != NULL)
-		free(data);
-
-	string bmpFileName = loadedFont.pages[0].name;
-	bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
-	string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
-
+    
 	Bitmap image;
 	vector<vector<Pixel>> bmp;
 
-	image.open(fontDir + file::FileUtil::getSeparator() + bmpFileName);
-
+    image.openFromData(bmpData, bmpSize);
+    
 	bool bmpValid = image.isImage();
 
 	if (bmpValid)
-	{
 		bmp = image.toPixelMatrix();
-	}
 
 	for (auto& row : bmp)
 	{
 		vector<bool> boolRow;
-		for (auto& column : row)
-		{
+		
+        for (auto& column : row)
 			boolRow.push_back(!column.on);
-		}
-		atlas.push_back(boolRow);
+
+        atlas.push_back(boolRow);
 	}
 }
 

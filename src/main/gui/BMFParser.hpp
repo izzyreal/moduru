@@ -24,7 +24,8 @@ namespace moduru::gui
 		bmfont getLoadedFont();
 
 	public:
-		BMFParser(std::string fontPath);
+        BMFParser(char* fntData, int fntSize, char* bmpData, int bmpSize);
+        BMFParser(std::string fontPath);
 		~BMFParser();
 
 	};

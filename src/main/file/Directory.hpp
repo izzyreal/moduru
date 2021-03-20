@@ -22,7 +22,7 @@ public:
     bool del() override;
     
 public:
-    Directory(std::string const path, std::shared_ptr<Directory> parent);
+    Directory(std::string const path, std::shared_ptr<Directory> parent = {});
     
 };
 }

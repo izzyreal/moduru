@@ -95,6 +95,7 @@ class Bitmap
     **/
     void fromPixelMatrix(const PixelMatrix &m);
     
+    void openFromData(char* data, const int size);
 };
 
 #include "bitmap.cpp"

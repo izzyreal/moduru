@@ -50,7 +50,7 @@ struct bmpfile_header
 
 /**
  * @brief Mircosoft's defined header structure for Bitmap version 3.x.
- * 
+ *
  * https://msdn.microsoft.com/en-us/library/dd183376%28v=vs.85%29.aspx
  */
 struct bmpfile_dib_info
@@ -69,15 +69,15 @@ struct bmpfile_dib_info
 };
 
 /**
- * @brief The color table for the monochrome image palette. 
- * 
+ * @brief The color table for the monochrome image palette.
+ *
  * Whatever 24-bit color is specified in the palette in the BMP will show up in
  * the actual image.
  */
 struct bmpfile_color_table
 {
-    // I discovered on my system that the entire RGB num in the palette is 
-    // parsed as little-endian. Not sure if this is the same on all systems, 
+    // I discovered on my system that the entire RGB num in the palette is
+    // parsed as little-endian. Not sure if this is the same on all systems,
     // but here, the colors are in reverse order.
     uint8_t blue;     ///< Blue component
     uint8_t green;    ///< Green component
@@ -85,6 +85,147 @@ struct bmpfile_color_table
     uint8_t reserved; ///< Should be 0.
 };
 
+void Bitmap::openFromData(char* data, const int size)
+{
+    size_t pos = 0;
+    // Check to make sure that the first two bytes of the file are the "BM"
+    // identifier that identifies a bitmap image.
+    if (data[0] != 'B' || data[1] != 'M')
+    {
+        std::cout << "BMP data is not in proper BMP format; it does "
+                              << "not begin with the magic bytes!\n";
+    }
+    else
+    {
+        pos += 2;
+        
+        bmpfile_header header;
+        for (auto i = 0; i < sizeof(header); i++)
+            ((char*)(&header))[i] = data[pos + i];
+        
+        pos += sizeof(header);
+        
+        bmpfile_dib_info dib_info;
+        for (auto i = 0; i < sizeof(dib_info); i++)
+            ((char*)(&dib_info))[i] = data[pos + i];
+        
+        pos += sizeof(dib_info);
+        
+        bmpfile_color_table color1;
+        for (auto i = 0; i < sizeof(color1); i++)
+            ((char*)(&color1))[i] = data[pos + i];
+        
+        pos += sizeof(color1);
+
+        bmpfile_color_table color2;
+        for (auto i = 0; i < sizeof(color2); i++)
+            ((char*)(&color2))[i] = data[pos + i];
+        
+        pos += sizeof(color2);
+
+        if (dib_info.bits_per_pixel != 1)
+        {
+            std::cout << "BMP data uses " << dib_info.bits_per_pixel
+                      << " bits per pixel (bit depth). This implementation"
+                      << " of Bitmap only supports 1-bit (monochrome)."
+                      << std::endl;
+        }
+        // No support for compressed images
+        else if (dib_info.compression != 0)
+        {
+            std::cout << "BMP data is compressed. "
+                      << "Bitmap only supports uncompressed images."
+                      << std::endl;
+        }
+        // Check for the reserved bits in the color palette
+        else if (color1.reserved != 0)
+        {
+            std::cout << "BMP data does not have a good color palette"
+                      << " for monochrome display;"
+                      << " its first reserved bits are not 0."
+                      << std::endl;
+        }
+        else if (color2.reserved != 0)
+        {
+            std::cout << "BMP data does not have a good color palette"
+                      << " for monochrome display;"
+                      << " its second reserved bits are not 0."
+                      << std::endl;
+        }
+        else  // All clear! Bitmap is (probably) in proper format.
+        {
+            // clear the Pixel vector if already holds information
+            for(int i = 0; i < pixels.size(); ++i)
+            {
+                pixels[i].clear();
+            }
+            pixels.clear();
+
+            // Check for this here and so that we know later whether we
+            // need to insert each row at the bottom or top of the image.
+            bool flip = true;
+            
+            if (dib_info.height < 0)
+            {
+                flip = false;
+                dib_info.height = -dib_info.height;
+            }
+
+            pos = header.bmp_offset;
+
+
+            // The number of bytes in a row of pixels
+            int row_bytes = 0;
+            // All but the last byte
+            row_bytes += dib_info.width / 8;
+            // Is there a last byte?
+            row_bytes += (dib_info.width % 8 != 0)? 1 : 0;
+            // Rows are padded so that they're always a multiple of 4 bytes
+            row_bytes += (row_bytes % 4 == 0)? 0 : (4 - row_bytes%4);
+            
+
+            std::unique_ptr<char[]> row_data(new char[row_bytes]);
+
+            // Transcribe Pixels from the image.
+            for (int row = 0; row < dib_info.height; ++row)
+            {
+                std::vector<Pixel> row_pixels;
+                bool high;
+                
+                for (auto i = 0; i < row_bytes; i++)
+                    row_data.get()[i] = data[pos + i];
+                
+                pos += row_bytes;
+                
+                // In a monochrome image, each bit is a pixel.
+                // First we cover all bits except the ones in the last byte.
+                for (int col = 0; col < dib_info.width / 8; ++col)
+                {
+                    for (int bit = 7; bit >= 0; --bit)
+                    {
+                        high = ((row_data.get()[col] & (1 << bit)) != 0);
+                        row_pixels.push_back(Pixel(high));
+                    }
+                }
+
+                // Then we cover the bits we missed at the end.
+                for (int rev_bit = 0;
+                    rev_bit < dib_info.width % 8;
+                    ++rev_bit)
+                {
+                    high = (row_data.get()[dib_info.width/8]
+                        & (1 << (7 - rev_bit))) != 0;
+                    row_pixels.push_back(Pixel(high));
+                }
+
+                if (flip)
+                    pixels.insert(pixels.begin(), row_pixels);
+                else
+                    pixels.push_back(row_pixels);
+            }
+        }
+    }//end else (is an image)
+}
 
 void Bitmap::open(std::string filename)
 {
@@ -164,7 +305,7 @@ void Bitmap::open(std::string filename)
                 }
                 pixels.clear();
 
-                // Check for this here and so that we know later whether we 
+                // Check for this here and so that we know later whether we
                 // need to insert each row at the bottom or top of the image.
                 bool flip = true;
                 if (dib_info.height < 0)
@@ -209,11 +350,11 @@ void Bitmap::open(std::string filename)
                     }
 
                     // Then we cover the bits we missed at the end.
-                    for (int rev_bit = 0; 
-                        rev_bit < dib_info.width % 8; 
+                    for (int rev_bit = 0;
+                        rev_bit < dib_info.width % 8;
                         ++rev_bit)
                     {
-                        high = (row_data.get()[dib_info.width/8] 
+                        high = (row_data.get()[dib_info.width/8]
                             & (1 << (7 - rev_bit))) != 0;
                         row_pixels.push_back(Pixel(high));
                     }
@@ -260,7 +401,7 @@ void Bitmap::save(std::string filename) const
         header.bmp_offset = sizeof(bmpfile_magic) + sizeof(bmpfile_header)
                 + sizeof(bmpfile_dib_info) + 2*sizeof(bmpfile_color_table);
         
-        // TODO: vv These lines are lazy and bad. 
+        // TODO: vv These lines are lazy and bad.
         int bytes_per_row = 0;
         for (int i = 0; i < pixels[0].size(); i += 32)
             bytes_per_row += 4;
@@ -281,7 +422,7 @@ void Bitmap::save(std::string filename) const
         dib_info.num_important_colors = 0;
         file.write((char*)(&dib_info), sizeof(dib_info));
 
-        // Color palettes. 
+        // Color palettes.
         // First is the '0' color...
         bmpfile_color_table off_color;
         off_color.red = MONO_R_VAL_OFF;
@@ -373,11 +514,11 @@ PixelMatrix Bitmap::toPixelMatrix() const
     if( isImage() )
     {
         return pixels;
-    }   
+    }
     else
     {
         return PixelMatrix();
-    }   
+    }
 }
 
 
