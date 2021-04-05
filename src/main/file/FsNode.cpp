@@ -48,9 +48,6 @@ bool FsNode::exists() {
 }
 
 bool FsNode::del() {
-    if (path.find("VMPC2000XL") == string::npos)
-        return false;
-    
     return remove(path.c_str()) == 0;
 }
 
@@ -77,10 +74,7 @@ const std::string FsNode::getName() {
 }
 
 bool FsNode::renameTo(std::string newName) {
-	
-	if (path.find("VMPC2000XL") == string::npos)
-		return false;
-	
+
 	auto newPath = std::string(parent->getPath() + FileUtil::getSeparator() + newName);
 
 	int result = rename(path.c_str(), newPath.c_str());

@@ -139,3 +139,18 @@ bool Directory::del() {
 	return FsNode::del();
 #endif
 }
+
+bool Directory::deleteRecursive(shared_ptr<Directory> d)
+{
+    for (auto& f : d->listFiles())
+    {
+        if (f->isFile())
+            f->del();
+        else
+        {
+            deleteRecursive(dynamic_pointer_cast<Directory>(f));
+        }
+    }
+    
+    d->del();
+}
