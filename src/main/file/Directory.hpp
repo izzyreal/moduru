@@ -20,7 +20,7 @@ public:
     bool isDirectory() override;
     bool create() override;
     bool del() override;
-    static bool deleteRecursive(std::shared_ptr<Directory> itself);
+    static void deleteRecursive(std::shared_ptr<Directory> itself);
     
 public:
     Directory(std::string const path, std::shared_ptr<Directory> parent = {});

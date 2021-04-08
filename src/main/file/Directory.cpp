@@ -140,7 +140,7 @@ bool Directory::del() {
 #endif
 }
 
-bool Directory::deleteRecursive(shared_ptr<Directory> d)
+void Directory::deleteRecursive(shared_ptr<Directory> d)
 {
     for (auto& f : d->listFiles())
     {
