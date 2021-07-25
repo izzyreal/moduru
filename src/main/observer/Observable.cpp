@@ -35,12 +35,6 @@ void Observable::addObserver(moduru::observer::Observer* o)
 }
 
 void Observable::deleteObserver(moduru::observer::Observer* o) {
-	// This check adds a bit of breathing space to application teardown.
-	if (this == nullptr)
-	{
-		return;
-	}
-
 	int counter = 0;
 	
 	for (auto& o1 : observers)

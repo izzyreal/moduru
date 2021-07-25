@@ -142,10 +142,9 @@ int CircularIntBuffer::write(vector<int> abData, int nOffset, int nLength)
 					std::unique_lock<std::mutex> lck(Mutex);
 					cv.wait(lck);
 				}
-				catch (const exception& e)
+				catch (const exception&)
 				{
 					printf("failure in CircularIntbuffer\n");
-					printf(e.what());
 				}
 			}
 			int	nAvailable = Math::min(availableWrite(), nRemainingBytes);
