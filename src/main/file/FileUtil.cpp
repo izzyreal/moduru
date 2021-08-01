@@ -66,6 +66,23 @@ uint64_t getFreeSpace()
 }
 #endif
 
+uint64_t FileUtil::getTotalDiskSpace()
+{
+#ifndef _WIN32
+    struct statfs stat;
+    struct passwd *pw = getpwuid(getuid());
+
+    if ( NULL != pw && 0 == statfs(pw->pw_dir, &stat) )
+    {
+        uint64_t totalBytes = (uint64_t)stat.f_blocks * stat.f_bsize;
+        return totalBytes;
+    }
+
+    return 0ULL;
+#endif
+
+}
+
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
 	size_t byteCount = 0;
@@ -121,7 +138,9 @@ ifstream FileUtil::ifstreamw(const string& path, std::ios_base::openmode flags)
 	return result;
 	
 #else
-	return ifstream(path.c_str(), flags); 
+    auto result = ifstream(path.c_str(), flags);
+    result.unsetf(ios_base::skipws);
+	return result; 
 #endif
 }
 
