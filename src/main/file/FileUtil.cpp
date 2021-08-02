@@ -11,6 +11,13 @@
 #include <Windows.h>
 #include <codecvt>
 #include <locale>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
+#include <regex>
 #endif
 
 #if defined (__APPLE__)
@@ -66,7 +73,7 @@ uint64_t getFreeSpace()
 }
 #endif
 
-uint64_t FileUtil::getTotalDiskSpace()
+uint64_t FileUtil::getTotalDiskSpace(std::string driveLetterStr)
 {
 #ifndef _WIN32
     struct statfs stat;
@@ -80,7 +87,28 @@ uint64_t FileUtil::getTotalDiskSpace()
 
     return 0ULL;
 #endif
+	std::string cmd = "wmic logicaldisk get name,size | find /i \"" + driveLetterStr + ":\"";
+	std::array<char, 128> buffer;
+	std::string result;
+	std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(cmd.c_str(), "r"), _pclose);
+	
+	if (!pipe) {
+		throw std::runtime_error("popen() failed!");
+	}
+	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+		result += buffer.data();
+	}
 
+	result = std::regex_replace(result, std::regex("([^0-9])"), "");
+
+	unsigned long long mediaSize = 0;
+
+	try {
+		mediaSize = stoull(result);
+	}
+	catch (const std::exception&) {}
+
+	return mediaSize;
 }
 
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)

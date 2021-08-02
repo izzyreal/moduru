@@ -22,7 +22,7 @@ namespace moduru::file
         static std::ofstream ofstreamw(const std::string& path, std::ios_base::openmode flags);
 
         static std::string getFreeDiskSpaceFormatted(const std::string& path);
-        static uint64_t getTotalDiskSpace();
+        static uint64_t getTotalDiskSpace(std::string driveLetterStr = "C");
 
         // Returns path separator used by the OS
         static std::string getSeparator();
