@@ -49,7 +49,7 @@ FILE* FileUtil::fopenw(const string& path, const string& mode)
 	filePathW.resize(path.size());
 	int newPathSize = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), path.length(), const_cast<wchar_t*>(filePathW.c_str()), path.length());
 	filePathW.resize(newPathSize);
-	
+
 	wstring modeW;
 	modeW.resize(mode.size());
 	int newModeSize = MultiByteToWideChar(CP_UTF8, 0, mode.c_str(), mode.length(), const_cast<wchar_t*>(modeW.c_str()), mode.length());
@@ -75,23 +75,12 @@ uint64_t getFreeSpace()
 
 uint64_t FileUtil::getTotalDiskSpace(std::string driveLetterStr)
 {
-#ifndef _WIN32
-    struct statfs stat;
-    struct passwd *pw = getpwuid(getuid());
-
-    if ( NULL != pw && 0 == statfs(pw->pw_dir, &stat) )
-    {
-        uint64_t totalBytes = (uint64_t)stat.f_blocks * stat.f_bsize;
-        return totalBytes;
-    }
-
-    return 0ULL;
-#endif
+#ifdef _WIN32
 	std::string cmd = "wmic logicaldisk get name,size | find /i \"" + driveLetterStr + ":\"";
 	std::array<char, 128> buffer;
 	std::string result;
 	std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(cmd.c_str(), "r"), _pclose);
-	
+
 	if (!pipe) {
 		throw std::runtime_error("popen() failed!");
 	}
@@ -109,18 +98,30 @@ uint64_t FileUtil::getTotalDiskSpace(std::string driveLetterStr)
 	catch (const std::exception&) {}
 
 	return mediaSize;
+#else
+    struct statfs stat;
+    struct passwd *pw = getpwuid(getuid());
+
+    if ( NULL != pw && 0 == statfs(pw->pw_dir, &stat) )
+    {
+        uint64_t totalBytes = (uint64_t)stat.f_blocks * stat.f_bsize;
+        return totalBytes;
+    }
+
+    return 0ULL;
+#endif
 }
 
 string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 {
 	size_t byteCount = 0;
-    
+
 #ifdef _WIN32
     if (path.length() < 3)
 	{
 		return "?";
 	}
-	
+
 	auto pathToCheck = path.substr(0, 3);
 
 	wstring filePathW;
@@ -144,7 +145,7 @@ string FileUtil::getFreeDiskSpaceFormatted(const string& path)
 #endif
 	int i = 0;
 	const char* units[] = { "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-	
+
 	while (byteCount > 1024)
 	{
 		byteCount /= 1024;
@@ -164,11 +165,11 @@ ifstream FileUtil::ifstreamw(const string& path, std::ios_base::openmode flags)
 	auto result = ifstream(strconverter.from_bytes(path).c_str(), flags);
 	result.unsetf(ios_base::skipws);
 	return result;
-	
+
 #else
     auto result = ifstream(path.c_str(), flags);
     result.unsetf(ios_base::skipws);
-	return result; 
+	return result;
 #endif
 }
 
@@ -178,7 +179,7 @@ ofstream FileUtil::ofstreamw(const string& path, std::ios_base::openmode flags)
 	wstring_convert<codecvt_utf8<wchar_t>, wchar_t> strconverter;
 	return ofstream(strconverter.from_bytes(path).c_str(), flags);
 #else
-	return ofstream(path.c_str(), flags); 
+	return ofstream(path.c_str(), flags);
 #endif
 }
 
