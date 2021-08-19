@@ -1,53 +1,18 @@
 #include "BMFParser.hpp"
 
-
-#include <file/File.hpp>
 #include <file/FileUtil.hpp>
-
-#include <stdio.h>
-#include <string.h>
 
 #include <gui/bitmap.hpp>
 
 #include <Logger.hpp>
 
+#include <stdio.h>
+#include <string.h>
+
 using namespace moduru;
 using namespace moduru::gui;
 
 using namespace std;
-
-BMFParser::BMFParser(string fontPath)
-{
-    size_t fileSize = 0;
-    char* data = GetFileData(fontPath.c_str(), &fileSize);
-    
-    if (GetBMFontData(data, fileSize, &loadedFont))
-        MLOG("Loaded BMFont data correctly.\n");
-    
-    Bitmap image;
-    vector<vector<Pixel>> bmp;
-
-    string bmpFileName = loadedFont.pages[0].name;
-    bmpFileName = bmpFileName.substr(0, loadedFont.pages[0].length);
-    string fontDir = fontPath.substr(0, file::FileUtil::GetLastSeparator(fontPath));
-
-    image.open(fontDir + file::FileUtil::getSeparator() + bmpFileName);
-    
-    bool bmpValid = image.isImage();
-
-    if (bmpValid)
-        bmp = image.toPixelMatrix();
-
-    for (auto& row : bmp)
-    {
-        vector<bool> boolRow;
-
-        for (auto& column : row)
-            boolRow.push_back(!column.on);
-
-        atlas.push_back(boolRow);
-    }
-}
 
 BMFParser::BMFParser(char* fntData, int fntSize, char* bmpData, int bmpSize)
 {
@@ -209,8 +174,4 @@ bmfont BMFParser::getLoadedFont() {
 
 std::vector<std::vector<bool>> BMFParser::getAtlas() {
 	return atlas;
-}
-
-BMFParser::~BMFParser() {
-
 }

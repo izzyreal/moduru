@@ -25,8 +25,6 @@ namespace moduru::gui
 
 	public:
         BMFParser(char* fntData, int fntSize, char* bmpData, int bmpSize);
-        BMFParser(std::string fontPath);
-		~BMFParser();
 
 	};
 }
