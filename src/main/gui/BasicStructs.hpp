@@ -11,7 +11,7 @@ struct MColor
     bool operator==(const MColor& rhs) { return (rhs.A == A && rhs.R == R && rhs.G == G && rhs.B == B); }
     bool operator!=(const MColor& rhs) { return !operator==(rhs); }
     bool Empty() const { return A == 0 && R == 0 && G == 0 && B == 0; }
-    void Clamp() { A = std::min(A, 255); R = std::min(R, 255); G = std::min(G, 255); B = std::min(B, 255); }
+    void Clamp() { A = std::min<int>(A, 255); R = std::min<int>(R, 255); G = std::min<int>(G, 255); B = std::min<int>(B, 255); }
 };
 
 struct MColorF
@@ -21,7 +21,7 @@ struct MColorF
     bool operator==(const MColorF& rhs) { return (rhs.A == A && rhs.R == R && rhs.G == G && rhs.B == B); }
     bool operator!=(const MColorF& rhs) { return !operator==(rhs); }
     bool Empty() const { return A == 0 && R == 0 && G == 0 && B == 0; }
-    void Clamp() { A = std::min(A, 1.0f); R = std::min(R, 1.0f); G = std::min(G, 1.0f); B = std::min(B, 1.0f); }
+    void Clamp() { A = std::min<float>(A, 1.0f); R = std::min<float>(R, 1.0f); G = std::min<float>(G, 1.0f); B = std::min<float>(B, 1.0f); }
 };
 
 static void setPixel3(unsigned char* pixel, const MColor& color) {
@@ -76,14 +76,14 @@ struct MRECT
     {
         if (Empty()) { return *pRHS; }
         if (pRHS->Empty()) { return *this; }
-        return MRECT(std::min(L, pRHS->L), std::min(T, pRHS->T), std::max(R, pRHS->R), std::max(B, pRHS->B));
+        return MRECT(std::min<int>(L, pRHS->L), std::min<int>(T, pRHS->T), std::max<int>(R, pRHS->R), std::max<int>(B, pRHS->B));
     }
 
     inline MRECT Intersect(MRECT* pRHS)
     {
         if (Intersects(pRHS))
         {
-            return MRECT(std::max(L, pRHS->L), std::max(T, pRHS->T), std::min(R, pRHS->R), std::min(B, pRHS->B));
+            return MRECT(std::max<int>(L, pRHS->L), std::max<int>(T, pRHS->T), std::min<int>(R, pRHS->R), std::min<int>(B, pRHS->B));
         }
         return MRECT();
     }
@@ -164,22 +164,22 @@ struct MRECT
     {
         if (L < pRHS->L)
         {
-            R = std::min(pRHS->R - 1, R + pRHS->L - L);
+            R = std::min<int>(pRHS->R - 1, R + pRHS->L - L);
             L = pRHS->L;
         }
         if (T < pRHS->T)
         {
-            B = std::min(pRHS->B - 1, B + pRHS->T - T);
+            B = std::min<int>(pRHS->B - 1, B + pRHS->T - T);
             T = pRHS->T;
         }
         if (R >= pRHS->R)
         {
-            L = std::max(pRHS->L, L - (R - pRHS->R + 1));
+            L = std::max<int>(pRHS->L, L - (R - pRHS->R + 1));
             R = pRHS->R - 1;
         }
         if (B >= pRHS->B)
         {
-            T = std::max(pRHS->T, T - (B - pRHS->B + 1));
+            T = std::max<int>(pRHS->T, T - (B - pRHS->B + 1));
             B = pRHS->B - 1;
         }
     }
