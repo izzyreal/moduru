@@ -8,7 +8,7 @@ class Pkg(ConanFile):
     generators = "cmake"
     exports_sources = "src/*"
     url = "https://github.com/izzyreal/moduru.git"
-    requires = ("rapidjson/1.1.0@bincrafters/stable")
+    requires = ("rapidjson/1.1.0")
 
     def build(self):
         cmake = CMake(self)
