@@ -62,9 +62,9 @@ namespace moduru::gui
 	};
 	struct bmfont_stream
 	{
-		bmfont_stream(uint8_t* pBuffer, size_t size) :
+		bmfont_stream(uint8_t* pBuffer, size_t _size) :
 			pos(0),
-			size(size),
+			size(_size),
 			pByteData(pBuffer)
 		{}
 		// Unsigned
