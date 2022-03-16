@@ -1,7 +1,10 @@
 #pragma once
 
 #ifdef __APPLE__
-#include <Carbon/Carbon.h>
+#include <TargetConditionals.h>
+#if !defined(TARGET_IPHONE_SIMULATOR)
+  #include <Carbon/Carbon.h>
+#endif
 #elif defined _WIN32
 #include <WinUser.h>
 #elif defined __linux__
@@ -239,7 +242,7 @@ public:
 
     static inline std::map<int, std::string> keyCodeNames = {
         
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(TARGET_IPHONE_SIMULATOR)
         { kVK_F1, names[MVK_F1] },
         { kVK_F2, names[MVK_F2] },
         { kVK_F3, names[MVK_F3] },
@@ -346,6 +349,115 @@ public:
         { kVK_PageUp, names[MVK_PageUp] },
         { kVK_End, names[MVK_End] },
         { kVK_PageDown, names[MVK_PageDown] }
+        
+#elif defined(__APPLE__) && defined(TARGET_IPHONE_SIMULATOR)
+        { 0, names[MVK_F1] },
+        { 0, names[MVK_F2] },
+        { 0, names[MVK_F3] },
+        { 0, names[MVK_F4] },
+        { 0, names[MVK_F5] },
+        { 0, names[MVK_F6] },
+        { 0, names[MVK_F7] },
+        { 0, names[MVK_F8] },
+        { 0, names[MVK_F9] },
+        { 0, names[MVK_F10] },
+        { 0, names[MVK_F11] },
+        { 0, names[MVK_F12] },
+        
+        { 0, names[MVK_Escape] },
+        { 0, names[MVK_ANSI_Grave] },
+        { 0, names[MVK_ISO_Section] },
+        { 0, names[MVK_Tab] },
+        { 0, names[MVK_CapsLock] },
+        { 0, names[MVK_Shift] },
+        { 0, names[MVK_Function] },
+        { 0, names[MVK_Control] },
+        { 0, names[MVK_Option] },
+        { 0, names[MVK_Command] },
+        { 0, names[MVK_ANSI_Minus] },
+        { 0, names[MVK_ANSI_Equal] },
+        { 0, names[MVK_Delete] },
+        { 0, names[MVK_ANSI_LeftBracket] },
+        { 0, names[MVK_ANSI_RightBracket] },
+        { 0, names[MVK_ANSI_Backslash] },
+        { 0, names[MVK_ANSI_Semicolon] },
+        { 0, names[MVK_ANSI_Quote] },
+        { 0, names[MVK_Return] },
+        { 0, names[MVK_ANSI_Comma] },
+        { 0, names[MVK_ANSI_Period] },
+        { 0, names[MVK_ANSI_Slash] },
+        { 0, names[MVK_RightShift] },
+        { 0, names[MVK_RightOption] },
+        { 0, names[MVK_Space] },
+        
+        { 0, names[MVK_ANSI_Keypad0] },
+        { 0, names[MVK_ANSI_Keypad1] },
+        { 0, names[MVK_ANSI_Keypad2] },
+        { 0, names[MVK_ANSI_Keypad3] },
+        { 0, names[MVK_ANSI_Keypad4] },
+        { 0, names[MVK_ANSI_Keypad5] },
+        { 0, names[MVK_ANSI_Keypad6] },
+        { 0, names[MVK_ANSI_Keypad7] },
+        { 0, names[MVK_ANSI_Keypad8] },
+        { 0, names[MVK_ANSI_Keypad9] },
+        
+        { 0, names[MVK_ANSI_0] },
+        { 0, names[MVK_ANSI_1] },
+        { 0, names[MVK_ANSI_2] },
+        { 0, names[MVK_ANSI_3] },
+        { 0, names[MVK_ANSI_4] },
+        { 0, names[MVK_ANSI_5] },
+        { 0, names[MVK_ANSI_6] },
+        { 0, names[MVK_ANSI_7] },
+        { 0, names[MVK_ANSI_8] },
+        { 0, names[MVK_ANSI_9] },
+        
+        { 0, names[MVK_ANSI_Q] },
+        { 0, names[MVK_ANSI_W] },
+        { 0, names[MVK_ANSI_E] },
+        { 0, names[MVK_ANSI_R] },
+        { 0, names[MVK_ANSI_T] },
+        { 0, names[MVK_ANSI_Y] },
+        { 0, names[MVK_ANSI_U] },
+        { 0, names[MVK_ANSI_I] },
+        { 0, names[MVK_ANSI_O] },
+        { 0, names[MVK_ANSI_P] },
+        { 0, names[MVK_ANSI_A] },
+        { 0, names[MVK_ANSI_S] },
+        { 0, names[MVK_ANSI_D] },
+        { 0, names[MVK_ANSI_F] },
+        { 0, names[MVK_ANSI_G] },
+        { 0, names[MVK_ANSI_H] },
+        { 0, names[MVK_ANSI_J] },
+        { 0, names[MVK_ANSI_K] },
+        { 0, names[MVK_ANSI_L] },
+        { 0, names[MVK_ANSI_Z] },
+        { 0, names[MVK_ANSI_X] },
+        { 0, names[MVK_ANSI_C] },
+        { 0, names[MVK_ANSI_V] },
+        { 0, names[MVK_ANSI_B] },
+        { 0, names[MVK_ANSI_N] },
+        { 0, names[MVK_ANSI_M] },
+        
+        { 0, names[MVK_LeftArrow]  },
+        { 0, names[MVK_RightArrow] },
+        { 0, names[MVK_UpArrow]    },
+        { 0, names[MVK_DownArrow]  },
+        
+        { 0, names[MVK_ANSI_KeypadDecimal] },
+        { 0, names[MVK_ANSI_KeypadMultiply] },
+        { 0, names[MVK_ANSI_KeypadPlus] },
+        { 0, names[MVK_ANSI_KeypadClear] },
+        { 0, names[MVK_ANSI_KeypadDivide] },
+        { 0, names[MVK_ANSI_KeypadEnter] },
+        { 0, names[MVK_ANSI_KeypadMinus] },
+        { 0, names[MVK_ANSI_KeypadEquals] },
+        
+        { 0, names[MVK_Home] },
+        { 0, names[MVK_PageUp] },
+        { 0, names[MVK_End] },
+        { 0, names[MVK_PageDown] }
+
         
 #elif defined _WIN32
 

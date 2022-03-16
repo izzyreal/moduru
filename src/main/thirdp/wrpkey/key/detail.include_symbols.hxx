@@ -13,7 +13,10 @@
   #include <winbase.h>
   #include <winuser.h>
 #elif defined(__APPLE__)
-  #include "Carbon/Carbon.h"
+  #include <TargetConditionals.h>
+  #if !defined(TARGET_IPHONE_SIMULATOR)
+    #include "Carbon/Carbon.h"
+  #endif
 #elif defined(__linux)
   #ifndef _wrpx11
     #include <linux/uinput.h>
