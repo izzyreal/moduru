@@ -12,7 +12,12 @@ using keys_element_t = std::tuple<const char* const, const int>;
   #include "detail.keys.Windows.hxx"
 
 #elif defined(__APPLE__)
-  #include "detail.keys.OSX.hxx"
+  #include <TargetConditionals.h>
+  #ifdef TARGET_IPHONE_SIMULATOR
+    #include "detail.keys.iOS.hxx"
+  #else
+    #include "detail.keys.macOS.hxx"
+  #endif
 #elif defined(__linux)
   #if defined _wrpx11
     #include "detail.keys.LinuxX.hxx"
