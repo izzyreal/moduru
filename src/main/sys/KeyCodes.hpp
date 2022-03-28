@@ -2,7 +2,7 @@
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>
-#if !defined(TARGET_IPHONE_SIMULATOR)
+#if !TARGET_OS_IOS
   #include <Carbon/Carbon.h>
 #endif
 #elif defined _WIN32
@@ -242,7 +242,7 @@ public:
 
     static inline std::map<int, std::string> keyCodeNames = {
         
-#if defined(__APPLE__) && !defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__APPLE__) && !TARGET_OS_IOS
         { kVK_F1, names[MVK_F1] },
         { kVK_F2, names[MVK_F2] },
         { kVK_F3, names[MVK_F3] },
@@ -350,7 +350,7 @@ public:
         { kVK_End, names[MVK_End] },
         { kVK_PageDown, names[MVK_PageDown] }
         
-#elif defined(__APPLE__) && defined(TARGET_IPHONE_SIMULATOR)
+#elif defined(__APPLE__) && TARGET_OS_IOS
         { 0, names[MVK_F1] },
         { 0, names[MVK_F2] },
         { 0, names[MVK_F3] },

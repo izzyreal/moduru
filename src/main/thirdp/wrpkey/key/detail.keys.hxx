@@ -13,7 +13,7 @@ using keys_element_t = std::tuple<const char* const, const int>;
 
 #elif defined(__APPLE__)
   #include <TargetConditionals.h>
-  #ifdef TARGET_IPHONE_SIMULATOR
+  #if TARGET_OS_IOS
     #include "detail.keys.iOS.hxx"
   #else
     #include "detail.keys.macOS.hxx"
