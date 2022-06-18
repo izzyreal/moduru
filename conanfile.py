@@ -2,7 +2,7 @@ from conans import ConanFile, CMake
 
 class Pkg(ConanFile):
     name = "moduru"
-    version = "0.1"
+    version = "0.2"
     license = "GPL-3.0"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
