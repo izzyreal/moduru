@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.13)
 
-include("${CMAKE_SOURCE_DIR}/rapidjson.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/CPM.cmake")
+
+CPMAddPackage("gh:Tencent/rapidjson#v1.1.0")
+
+set(MODURU_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting MODURU_SOURCE_DIR")
+set(MODURU_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting MODURU_BINARY_DIR")
 
 project(moduru)
 set(CMAKE_CXX_STANDARD 17)
@@ -16,12 +21,9 @@ endif()
 
 ## Configure main lib ##
 
-message("\n\nCURRENT: ${CMAKE_CURRENT_SOURCE_DIR}")
-message(": ${CMAKE_SOURCE_DIR}\n\n")
-
 set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
 
-include_directories(${_src_root_path_main} ${RAPIDJSON_INCLUDE_DIR})
+include_directories(${_src_root_path_main} ${rapidjson_SOURCE_DIR})
 
 file(
     GLOB_RECURSE _source_list_main 
@@ -41,7 +43,6 @@ foreach(_source IN ITEMS ${_source_list_main})
 endforeach()
 
 add_library(moduru ${_source_list_main})
-add_dependencies(moduru rapidjson)
 
 ## Configure test suite application ##
 
