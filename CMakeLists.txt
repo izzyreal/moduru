@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
+include("${CMAKE_SOURCE_DIR}/rapidjson.cmake")
+
 project(moduru)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -12,26 +14,21 @@ if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE INTERNAL "Minimum OS X deployment version")
 endif()
 
-if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-else()
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
-endif()
-
-conan_basic_setup(NO_OUTPUT_DIRS)
-
 ## Configure main lib ##
 
-set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/main")
+message("\n\nCURRENT: ${CMAKE_CURRENT_SOURCE_DIR}")
+message(": ${CMAKE_SOURCE_DIR}\n\n")
 
-include_directories(${_src_root_path_main})
+set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
+
+include_directories(${_src_root_path_main} ${RAPIDJSON_INCLUDE_DIR})
 
 file(
     GLOB_RECURSE _source_list_main 
     LIST_DIRECTORIES false
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${_src_root_path_main}/*.c*"
-    "${_src_root_path_main}/*.cpp*"
+    "${_src_root_path_main}/main/*.cpp*"
     "${_src_root_path_main}/*.h*"
     "${_src_root_path_main}/*.hpp*"
 	"${_src_root_path_main}/*.hxx*"
@@ -44,11 +41,11 @@ foreach(_source IN ITEMS ${_source_list_main})
 endforeach()
 
 add_library(moduru ${_source_list_main})
-conan_target_link_libraries(moduru)
+add_dependencies(moduru rapidjson)
 
 ## Configure test suite application ##
 
-set(_src_root_path_test "${CMAKE_CURRENT_SOURCE_DIR}/test")
+set(_src_root_path_test "${CMAKE_CURRENT_SOURCE_DIR}/src/test")
 
 include_directories(${_src_root_path_test})
 
