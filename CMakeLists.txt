@@ -2,19 +2,16 @@ cmake_minimum_required(VERSION 3.13)
 
 include(FetchContent)
 
-# Header-only
-FetchContent_Declare(
-  rapidjson
+FetchContent_Declare(rapidjson
   GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
-  GIT_TAG        f54b0e47a08782a6131cc3d60f94d038fa6e0a51 # v1.1.0
+  GIT_TAG        v1.1.0
+  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/deps/rapidjson
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
 )
 
-set(MODURU_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting MODURU_SOURCE_DIR")
-set(MODURU_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting MODURU_BINARY_DIR")
-
 project(moduru)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC")
 
