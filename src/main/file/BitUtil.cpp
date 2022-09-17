@@ -31,17 +31,14 @@ vector<int> BitUtil::invertRange(vector<int> range)
 
 unsigned char BitUtil::setBit(unsigned char b, int i, bool on)
 {
-	if (on) {
-		return static_cast<unsigned char>(b | (1 << i));
-	}
-	else {
-		return static_cast<unsigned char>(b & ~(1 << i));
-	}
+    auto bs = std::bitset<8>(b);
+    bs.set(i, on);
+    return static_cast<unsigned char>(bs.to_ulong());
 }
 
 bool BitUtil::isBitOn(unsigned char b, int i)
 {
-	if ((b & (int64_t(1LL) << i)) != 0)
+	if ((b & (1UL << i)) != 0)
 		return true;
 
 	return false;
@@ -65,11 +62,13 @@ unsigned char BitUtil::stitchBytes(unsigned char b1, vector<int> usedBits1, unsi
 			throw std::invalid_argument("stitch error");
 	}
 	unsigned char result = 0;
-	for (auto i = usedBits1[0]; i < usedBits1[1] + 1; i++) {
+
+	for (auto i = usedBits1[0]; i <= usedBits1[1]; i++) {
 		auto on = isBitOn(b1, i);
 		result = setBit(result, i, on);
 	}
-	for (auto i = usedBits2[0]; i < usedBits2[1] + 1; i++) {
+
+	for (auto i = usedBits2[0]; i <= usedBits2[1]; i++) {
 		auto on = isBitOn(b2, i);
 		result = setBit(result, i, on);
 	}
