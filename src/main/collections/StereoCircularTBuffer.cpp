@@ -1,7 +1,5 @@
 #include "StereoCircularTBuffer.hpp"
 
-#include <Logger.hpp>
-
 using namespace moduru::io;
 using namespace std;
 

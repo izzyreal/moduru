@@ -14,7 +14,6 @@
 #include "MidiMessage.h"
 
 #include <vector>
-#include <iostream>
 #include <iterator>
 
 

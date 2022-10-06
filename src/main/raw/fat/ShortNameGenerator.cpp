@@ -4,13 +4,10 @@
 
 #include <lang/StrUtil.hpp>
 
-#include <file/File.hpp>
-
 #include <Logger.hpp>
 
 using namespace moduru::raw::fat;
 using namespace moduru::lang;
-using namespace moduru::file;
 using namespace std;
 
 ShortNameGenerator::ShortNameGenerator(const set<string>& usedNames)

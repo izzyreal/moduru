@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <sys/Home.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 #ifdef __APPLE__
 #include <pwd.h>

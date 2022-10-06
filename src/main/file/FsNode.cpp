@@ -4,7 +4,7 @@
 #include <file/Directory.hpp>
 #include <file/FileUtil.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 #if defined (_WIN32)
 #include <Windows.h>
