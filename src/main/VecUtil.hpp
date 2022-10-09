@@ -17,12 +17,12 @@ namespace moduru {
 		static bool Equals(std::vector<char> a, std::vector<char> b);
 
 		template<typename T>
-		static void VecCopy(std::vector<T>* src, int srcPos, std::vector<T>* dest, int destPos, int length) {
-			if (destPos + length > dest->size()) throw std::invalid_argument("Destination out of bounds!\n");
-			if (srcPos + length > src->size()) throw std::invalid_argument("Source out of bounds!\n");
-			if (src == dest) dest = new std::vector<T>(src->size());
+		static void VecCopy(std::vector<T>& src, int srcPos, std::vector<T>& dest, int destPos, int length) {
+			if (destPos + length > dest.size()) throw std::invalid_argument("Destination out of bounds!\n");
+			if (srcPos + length > src.size()) throw std::invalid_argument("Source out of bounds!\n");
+
 			for (int i = 0; i < length; i++)
-				(*dest)[i + destPos] = (*src)[i + srcPos];
+				dest[i + destPos] = src[i + srcPos];
 		}
 
 		static std::vector<int8_t> CopyOf(std::vector<int8_t> src, int newLength);

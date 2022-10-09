@@ -58,14 +58,14 @@ int CircularIntBuffer::getWritePos()
 
 
 
-int CircularIntBuffer::read(vector<int>* abData)
+int CircularIntBuffer::read(vector<int>& abData)
 {
-	return read(abData, 0, static_cast<int>(abData->size()));
+	return read(abData, 0, static_cast<int>(abData.size()));
 }
 
 
 
-int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
+int CircularIntBuffer::read(vector<int>& abData, int nOffset, int nLength)
 {
 	if (!isOpen())
 	{
@@ -104,7 +104,7 @@ int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
 			while (nAvailable > 0)
 			{
 				int	nToRead = Math::min(nAvailable, m_nSize - getReadPos());
-				moduru::VecUtil::VecCopy(&m_abData, getReadPos(), abData, nOffset, nToRead);
+				moduru::VecUtil::VecCopy(m_abData, getReadPos(), abData, nOffset, nToRead);
 				m_lReadPos += nToRead;
 				nOffset += nToRead;
 				nAvailable -= nToRead;
@@ -117,14 +117,14 @@ int CircularIntBuffer::read(vector<int>* abData, int nOffset, int nLength)
 }
 
 
-int CircularIntBuffer::write(vector<int> abData)
+int CircularIntBuffer::write(vector<int>& abData)
 {
 	return write(abData, 0, static_cast<int>(abData.size()));
 }
 
 
 
-int CircularIntBuffer::write(vector<int> abData, int nOffset, int nLength)
+int CircularIntBuffer::write(vector<int>& abData, int nOffset, int nLength)
 {
 	std::lock_guard<std::mutex> guard(this->Mutex);
 	{
@@ -151,7 +151,7 @@ int CircularIntBuffer::write(vector<int> abData, int nOffset, int nLength)
 			while (nAvailable > 0)
 			{
 				int	nToWrite = Math::min(nAvailable, m_nSize - getWritePos());
-				moduru::VecUtil::VecCopy(&abData, nOffset, &m_abData, getWritePos(), nToWrite);
+				moduru::VecUtil::VecCopy(abData, nOffset, m_abData, getWritePos(), nToWrite);
 				m_lWritePos += nToWrite;
 				nOffset += nToWrite;
 				nAvailable -= nToWrite;
@@ -165,6 +165,6 @@ int CircularIntBuffer::write(vector<int> abData, int nOffset, int nLength)
 
 int CircularIntBuffer::read() {
 	vector<int> tmp(1);
-	read(&tmp);
+	read(tmp);
 	return tmp[0];
 }

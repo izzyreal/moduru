@@ -25,10 +25,10 @@ namespace moduru {
 			int availableRead();
 			int availableWrite();
 			int read();
-			int read(std::vector<int>* abData);
-			int read(std::vector<int>* abData, int nOffset, int nLength);
-			int write(std::vector<int> abData);
-			int write(std::vector<int> abData, int nOffset, int nLength);
+			int read(std::vector<int>& abData);
+			int read(std::vector<int>& abData, int nOffset, int nLength);
+			int write(std::vector<int>& abData);
+			int write(std::vector<int>& abData, int nOffset, int nLength);
 
 		private:
 			bool isOpen();

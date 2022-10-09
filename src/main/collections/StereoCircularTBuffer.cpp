@@ -8,13 +8,13 @@ StereoCircularTBuffer::StereoCircularTBuffer(int size) {
 	dataR = vector<float>(size);
 }
 
-void StereoCircularTBuffer::read(vector<float>* destL, vector<float>* destR, int srcOffset, int length) {
+void StereoCircularTBuffer::read(vector<float>& destL, vector<float>& destR, int srcOffset, int length) {
 	auto oldReadPos = readPos;
 	for (int i = 0; i < length; i++) {
 		if (readPos + srcOffset >= dataL.size()) readPos -= static_cast<int>(dataL.size());
 		while ((readPos + srcOffset) < 0) readPos += static_cast<int>(dataL.size());
-		(*destL)[i] = dataL[readPos + srcOffset];
-		(*destR)[i] = dataR[readPos + srcOffset];
+		destL[i] = dataL[readPos + srcOffset];
+		destR[i] = dataR[readPos + srcOffset];
 		readPos++;
 	}
 	readPos = oldReadPos;
@@ -65,18 +65,18 @@ void StereoCircularTBuffer::moveReadPos(int amount) {
 	while ((readPos) < 0) readPos += static_cast<int>(dataL.size());
 }
 
-void StereoCircularTBuffer::write(vector<float>* srcL, vector<float>* srcR, int length) {
+void StereoCircularTBuffer::write(vector<float>& srcL, vector<float>& srcR, int length) {
 	for (int i = 0; i < length; i++) {
 		if (writePos >= dataL.size()) writePos = 0;
-		dataL[writePos] = (*srcL)[i];
-		dataR[writePos] = (*srcR)[i];
+		dataL[writePos] = srcL[i];
+		dataR[writePos] = srcR[i];
 		writePos++;
 	}
 	//readPos = writePos;
 }
 
-void StereoCircularTBuffer::write(vector<float>* srcL, vector<float>* srcR) {
-	write(srcL, srcR, static_cast<int>(srcL->size()));
+void StereoCircularTBuffer::write(vector<float>& srcL, vector<float>& srcR) {
+	write(srcL, srcR, static_cast<int>(srcL.size()));
 }
 
 StereoCircularTBuffer::~StereoCircularTBuffer() {
