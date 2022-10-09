@@ -20,7 +20,9 @@ uint64_t System::currentTimeMillis()
 string System::demangle(const string& typeIdName) {
     int status = 0;
     char* demangled = abi::__cxa_demangle(typeIdName.c_str(), 0, 0, &status);
-    return string(demangled);
+    std::string result(demangled);
+    free(demangled);
+    return result;
 }
 #endif
 
