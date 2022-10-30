@@ -26,5 +26,5 @@ namespace moduru {
 	};
 }
 
-#define MLOG(arg) moduru::Logger::l.log(arg);
+#define MLOG(arg) (moduru::Logger::l.log(arg))
 #endif
