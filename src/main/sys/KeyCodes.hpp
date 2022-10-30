@@ -240,7 +240,17 @@ public:
         { MVK_PageDown, "page down" }
     };
 
-    static inline std::map<int, std::string> keyCodeNames = {
+    static std::string getKeyCodeName(int keyCode)
+    {
+        for (auto& kv : keyCodeNames) {
+            if (kv.first == keyCode) {
+                return kv.second;
+            }
+        }
+        return "unknown";
+    }
+
+    static inline std::vector<std::pair<int, std::string>> keyCodeNames = {
         
 #if defined(__APPLE__) && !TARGET_OS_IOS
         { kVK_F1, names[MVK_F1] },
@@ -304,32 +314,32 @@ public:
         { kVK_ANSI_8, names[MVK_ANSI_8] },
         { kVK_ANSI_9, names[MVK_ANSI_9] },
         
-        { kVK_ANSI_Q, names[MVK_ANSI_Q] },
-        { kVK_ANSI_W, names[MVK_ANSI_W] },
-        { kVK_ANSI_E, names[MVK_ANSI_E] },
-        { kVK_ANSI_R, names[MVK_ANSI_R] },
-        { kVK_ANSI_T, names[MVK_ANSI_T] },
-        { kVK_ANSI_Y, names[MVK_ANSI_Y] },
-        { kVK_ANSI_U, names[MVK_ANSI_U] },
-        { kVK_ANSI_I, names[MVK_ANSI_I] },
-        { kVK_ANSI_O, names[MVK_ANSI_O] },
-        { kVK_ANSI_P, names[MVK_ANSI_P] },
         { kVK_ANSI_A, names[MVK_ANSI_A] },
-        { kVK_ANSI_S, names[MVK_ANSI_S] },
+        { kVK_ANSI_B, names[MVK_ANSI_B] },
+        { kVK_ANSI_C, names[MVK_ANSI_C] },
         { kVK_ANSI_D, names[MVK_ANSI_D] },
+        { kVK_ANSI_E, names[MVK_ANSI_E] },
         { kVK_ANSI_F, names[MVK_ANSI_F] },
         { kVK_ANSI_G, names[MVK_ANSI_G] },
         { kVK_ANSI_H, names[MVK_ANSI_H] },
+        { kVK_ANSI_I, names[MVK_ANSI_I] },
         { kVK_ANSI_J, names[MVK_ANSI_J] },
         { kVK_ANSI_K, names[MVK_ANSI_K] },
         { kVK_ANSI_L, names[MVK_ANSI_L] },
-        { kVK_ANSI_Z, names[MVK_ANSI_Z] },
-        { kVK_ANSI_X, names[MVK_ANSI_X] },
-        { kVK_ANSI_C, names[MVK_ANSI_C] },
-        { kVK_ANSI_V, names[MVK_ANSI_V] },
-        { kVK_ANSI_B, names[MVK_ANSI_B] },
-        { kVK_ANSI_N, names[MVK_ANSI_N] },
         { kVK_ANSI_M, names[MVK_ANSI_M] },
+        { kVK_ANSI_N, names[MVK_ANSI_N] },
+        { kVK_ANSI_O, names[MVK_ANSI_O] },
+        { kVK_ANSI_P, names[MVK_ANSI_P] },
+        { kVK_ANSI_Q, names[MVK_ANSI_Q] },
+        { kVK_ANSI_R, names[MVK_ANSI_R] },
+        { kVK_ANSI_S, names[MVK_ANSI_S] },
+        { kVK_ANSI_T, names[MVK_ANSI_T] },
+        { kVK_ANSI_U, names[MVK_ANSI_U] },
+        { kVK_ANSI_V, names[MVK_ANSI_V] },
+        { kVK_ANSI_W, names[MVK_ANSI_W] },
+        { kVK_ANSI_X, names[MVK_ANSI_X] },
+        { kVK_ANSI_Y, names[MVK_ANSI_Y] },
+        { kVK_ANSI_Z, names[MVK_ANSI_Z] },
         
         { kVK_LeftArrow, names[MVK_LeftArrow]  },
         { kVK_RightArrow, names[MVK_RightArrow] },
@@ -346,8 +356,8 @@ public:
         { kVK_ANSI_KeypadEquals, names[MVK_ANSI_KeypadEquals] },
         
         { kVK_Home, names[MVK_Home] },
-        { kVK_PageUp, names[MVK_PageUp] },
         { kVK_End, names[MVK_End] },
+        { kVK_PageUp, names[MVK_PageUp] },
         { kVK_PageDown, names[MVK_PageDown] }
         
 #elif defined(__APPLE__) && TARGET_OS_IOS
