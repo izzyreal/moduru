@@ -98,6 +98,4 @@ class Bitmap
     void openFromData(char* data, const int size);
 };
 
-#include "bitmap.cpp"
-
 #endif
