@@ -10,7 +10,7 @@ using namespace moduru::raw::fat;
 using namespace moduru::lang;
 using namespace std;
 
-ShortNameGenerator::ShortNameGenerator(const set<string>& usedNames)
+ShortNameGenerator::ShortNameGenerator(const vector<string>& usedNames)
 {
 	this->usedNames = usedNames;
 }
@@ -92,8 +92,9 @@ ShortName ShortNameGenerator::generateShortName(const string& longFullName)
 		longExt = tidyString(name.substr(dotIdx + 1));
 	}
 	string shortExt = (longExt.length() > 3) ? longExt.substr(0, 3) : longExt;
-	
-	if (forceSuffix || (longName.length() > 8) || usedNames.find(ShortName(longName, shortExt).asSimpleString()) != usedNames.end()) {
+
+	if (forceSuffix || (longName.length() > 8) ||
+        find(usedNames.begin(), usedNames.end(), ShortName(longName, shortExt).asSimpleString()) != usedNames.end()) {
 
 		auto const maxLongIdx = static_cast<int>(longName.length() < 8 ? longName.length() : 8);
 
@@ -106,7 +107,7 @@ ShortName ShortNameGenerator::generateShortName(const string& longFullName)
 			auto const shortName = longName.substr(0, trimIndex) + serial;
 			auto result = ShortName(shortName, shortExt);
 
-			if (usedNames.find(result.asSimpleString()) == usedNames.end()) {
+			if (find(usedNames.begin(), usedNames.end(), result.asSimpleString()) == usedNames.end()) {
 				return result;
 			}
 		}
