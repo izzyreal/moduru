@@ -1,6 +1,6 @@
 #pragma once
 
-#include <set>
+#include <vector>
 #include <string>
 
 namespace moduru::raw::fat
@@ -14,20 +14,20 @@ namespace moduru::raw::fat
 	{
 
 	private:
-		std::set<std::string> usedNames;
+		std::vector<std::string> usedNames;
 
 	public:
 		static bool validChar(char toTest);
 		static bool isSkipChar(char c);
 
 	private:
-		std::string tidyString(std::string dirty);
 		bool cleanString(std::string s);
 		std::string stripLeadingPeriods(std::string str);
 
 	public:
 		ShortName generateShortName(const std::string& longFullName);
+        static std::string tidyString(std::string dirty);
 
-		ShortNameGenerator(const std::set<std::string>& usedNames);
+		ShortNameGenerator(const std::vector<std::string>& usedNames);
 	};
 }

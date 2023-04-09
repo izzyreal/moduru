@@ -815,7 +815,7 @@ std::string BCMath::bcround (const std::string &lhs, int scale) {
     int lsign, lint, ldot, lfrac, lscale;
     if (bc_parse_number (lhs, lsign, lint, ldot, lfrac, lscale) < 0) {
       std::cerr << "First parameter \""<<lhs.c_str()<<"\" in function bcround is not a number"<< std::endl;
-      return 0;
+        return {};
     }
 
 	int len = (int)(lhs.size());

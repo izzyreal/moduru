@@ -13,8 +13,7 @@ class FsNode {
 private:
     std::string path;
     std::shared_ptr<Directory> parent;
-    std::shared_ptr<std::string> shortName;
-    
+
 public:
     const std::string getPath();
     const std::string getName();
