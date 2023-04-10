@@ -229,18 +229,17 @@ void Bitmap::openFromData(char* data, const int size)
 
 void Bitmap::open(std::string filename)
 {
-    auto file = moduru::file::FileUtil::ifstreamw(filename, std::ios::in | std::ios::binary);
-    
-    if (file.fail())
+    auto file = moduru::file::FileUtil::fopenw(filename, "r");
+
+    if (!file)
     {
         std::cout << filename << " could not be opened. Does it exist? "
                   << "Is it already open by another program?\n";
-        //pixels.resize(0); //make empty if it isn't already
     }
     else
     {
         bmpfile_magic magic;
-        file.read((char*)(&magic), sizeof(magic));
+        fread(magic.magic, sizeof(char), BMP_MAGIC_ID, file);
         
         // Check to make sure that the first two bytes of the file are the "BM"
         // identifier that identifies a bitmap image.
@@ -253,18 +252,37 @@ void Bitmap::open(std::string filename)
         {
             // Read the file headers
             bmpfile_header header;
-            file.read((char*)(&header), sizeof(header));
+            fread(&header.file_size, sizeof(header.file_size), 1, file);
+            fread(&header.creator1, sizeof(header.creator1), 1, file);
+            fread(&header.creator2, sizeof(header.creator2), 1, file);
+            fread(&header.bmp_offset, sizeof(header.bmp_offset), 1, file);
 
             bmpfile_dib_info dib_info;
-            file.read((char*)(&dib_info), sizeof(dib_info));
+
+            fread(&dib_info.header_size, sizeof(dib_info.header_size), 1, file);
+            fread(&dib_info.width, sizeof(dib_info.width), 1, file);
+            fread(&dib_info.height, sizeof(dib_info.height), 1, file);
+            fread(&dib_info.num_planes, sizeof(dib_info.num_planes), 1, file);
+            fread(&dib_info.bits_per_pixel, sizeof(dib_info.bits_per_pixel), 1, file);
+            fread(&dib_info.compression, sizeof(dib_info.compression), 1, file);
+            fread(&dib_info.bmp_byte_size, sizeof(dib_info.bmp_byte_size), 1, file);
+            fread(&dib_info.hres, sizeof(dib_info.hres), 1, file);
+            fread(&dib_info.vres, sizeof(dib_info.vres), 1, file);
+            fread(&dib_info.num_colors, sizeof(dib_info.num_colors), 1, file);
+            fread(&dib_info.num_important_colors, sizeof(dib_info.num_important_colors), 1, file);
 
             // Read the 2-color palette for monochrome
             bmpfile_color_table color1;
-            file.read((char*)(&color1), sizeof(color1));
+            fread(&color1.blue, sizeof(color1.blue), 1, file);
+            fread(&color1.green, sizeof(color1.green), 1, file);
+            fread(&color1.red, sizeof(color1.red), 1, file);
+            fread(&color1.reserved, sizeof(color1.reserved), 1, file);
 
             bmpfile_color_table color2;
-            file.read((char*)(&color2), sizeof(color2));
-
+            fread(&color2.blue, sizeof(color2.blue), 1, file);
+            fread(&color2.green, sizeof(color2.green), 1, file);
+            fread(&color2.red, sizeof(color2.red), 1, file);
+            fread(&color2.reserved, sizeof(color2.reserved), 1, file);
 
             // Only support for 1-bit images
             if (dib_info.bits_per_pixel != 1)
@@ -315,8 +333,7 @@ void Bitmap::open(std::string filename)
                 }
 
                 // Move to the data
-                file.seekg(header.bmp_offset);
-
+                fseek(file, header.bmp_offset, SEEK_SET);
 
                 // The number of bytes in a row of pixels
                 int row_bytes = 0;
@@ -326,7 +343,6 @@ void Bitmap::open(std::string filename)
                 row_bytes += (dib_info.width % 8 != 0)? 1 : 0;
                 // Rows are padded so that they're always a multiple of 4 bytes
                 row_bytes += (row_bytes % 4 == 0)? 0 : (4 - row_bytes%4);
-                
 
                 std::unique_ptr<char[]> row_data(new char[row_bytes]);
 
@@ -336,7 +352,7 @@ void Bitmap::open(std::string filename)
                     std::vector<Pixel> row_pixels;
                     bool high;
 
-                    file.read(row_data.get(), row_bytes);
+                    fread(row_data.get(), sizeof(char), row_bytes, file);
 
                     // In a monochrome image, each bit is a pixel.
                     // First we cover all bits except the ones in the last byte.
@@ -345,7 +361,7 @@ void Bitmap::open(std::string filename)
                         for (int bit = 7; bit >= 0; --bit)
                         {
                             high = ((row_data.get()[col] & (1 << bit)) != 0);
-                            row_pixels.push_back(Pixel(high));
+                            row_pixels.emplace_back(high);
                         }
                     }
 
@@ -356,7 +372,7 @@ void Bitmap::open(std::string filename)
                     {
                         high = (row_data.get()[dib_info.width/8]
                             & (1 << (7 - rev_bit))) != 0;
-                        row_pixels.push_back(Pixel(high));
+                        row_pixels.emplace_back(high);
                     }
 
                     if (flip)
@@ -366,7 +382,7 @@ void Bitmap::open(std::string filename)
                 }
             }
 
-            file.close();
+            fclose(file);
         }//end else (is an image)
     }//end else (can open file)
 }

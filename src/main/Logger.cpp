@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <Logger.hpp>
 
-#include <locale>
-#include <codecvt>
 #include <string>
 
 #include <file/FileUtil.hpp>
@@ -18,15 +16,14 @@ Logger Logger::l;
 
 void Logger::setPath(std::string s) {
 	path = s;
-	//remove(path.c_str());
 }
 
 void Logger::log(std::string s) {
-	if (path.compare("") == 0) {
+	if (path.empty()) {
 		return;
 	}
 
-	fp = moduru::file::FileUtil::fopenw(path, "ab");
+	auto fp = moduru::file::FileUtil::fopenw(path, "ab");
 
 	s += "\n";
 
