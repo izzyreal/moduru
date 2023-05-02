@@ -34,6 +34,11 @@ public:
 		}
 	}
 
+    void moveTailToHead()
+    {
+        tail_ = head_;
+    }
+
 	void move(int delta)
 	{
 		tail_ += delta;
