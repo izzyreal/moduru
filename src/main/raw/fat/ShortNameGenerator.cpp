@@ -4,7 +4,7 @@
 
 #include <lang/StrUtil.hpp>
 
-#include <Logger.hpp>
+#include <algorithm>
 
 using namespace moduru::raw::fat;
 using namespace moduru::lang;
