@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-
+#include <cstdint>
 #include <stdio.h>
 
 namespace moduru::file

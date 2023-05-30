@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace moduru::gui
 {
 #define BMFONT_BLOCK_TYPE_INFO 1
