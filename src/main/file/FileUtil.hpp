@@ -13,7 +13,6 @@ namespace moduru::file
     {
     public:
         static FILE* fopenw(const std::string& path, const std::string& mode);
-        static std::string getFreeDiskSpaceFormatted(const std::string& path);
         static uint64_t getTotalDiskSpace(std::string driveLetterStr = "C");
     };
 }
