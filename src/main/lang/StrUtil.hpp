@@ -19,9 +19,6 @@ namespace moduru::lang
 
 		static bool hasEnding(std::string const& fullString, std::string const& ending);
 
-		static std::string subStr(const std::string str, int start, int end);
-		static int cntByte(unsigned char cChar);
-
 		static std::vector<std::string> split(const std::string& s, char c);
 	};
 }
