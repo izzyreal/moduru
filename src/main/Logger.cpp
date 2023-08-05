@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include <file/FileUtil.hpp>
-
 using namespace moduru;
 using namespace std;
 
@@ -23,11 +21,11 @@ void Logger::log(std::string s) {
 		return;
 	}
 
-	auto fp = moduru::file::FileUtil::fopenw(path, "ab");
-
-	s += "\n";
-
-	fwrite(s.c_str(), s.length(), 1, fp);
-
-	fclose(fp);
+	//auto fp = moduru::file::FileUtil::fopenw(path, "ab");
+    //
+	//s += "\n";
+    //
+	//fwrite(s.c_str(), s.length(), 1, fp);
+    //
+	//fclose(fp);
 }
