@@ -1,7 +1,6 @@
 #include <observer/Observable.hpp>
 
 using namespace moduru::observer;
-using namespace std;
 
 int Observable::countObservers()
 {
@@ -13,11 +12,11 @@ void Observable::notifyObservers()
 	notifyObservers(nullptr);
 }
 
-void Observable::notifyObservers(nonstd::any arg)
+void Observable::notifyObservers(Message message)
 {
 	for (auto& a : observers)
 	{
-		a->update(this, arg);
+		a->update(this, message);
 	}
 }
 

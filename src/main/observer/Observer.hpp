@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <thirdp/any.hpp>
+#include <utility>
 
 namespace moduru::observer
 {
@@ -9,11 +9,10 @@ class Observable;
 
 namespace moduru::observer
 {
+using Message = std::variant<std::string, int, std::pair<float, float>>;
 class Observer
 {
 public:
-    virtual void update(nonstd::any) {}
-    virtual void update(Observable*, nonstd::any) {}
-    virtual ~Observer() {}
+    virtual void update(Observable*, Message) {}
 };
 }
