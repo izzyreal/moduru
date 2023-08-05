@@ -13,11 +13,9 @@ namespace moduru::observer
 		virtual void notifyObservers();
 		virtual void notifyObservers(Message message);
 		void addObserver(moduru::observer::Observer* o);
-		void deleteObservers();
-		void deleteObserver(moduru::observer::Observer* o);
-		int countObservers();
+        void deleteObserver(moduru::observer::Observer* o);
 
-	private:
+    private:
 		std::vector<moduru::observer::Observer*> observers;
 
 	};

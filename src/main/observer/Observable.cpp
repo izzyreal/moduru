@@ -2,11 +2,6 @@
 
 using namespace moduru::observer;
 
-int Observable::countObservers()
-{
-	return (int)(observers.size());
-}
-
 void Observable::notifyObservers()
 {
 	notifyObservers(nullptr);
@@ -45,9 +40,4 @@ void Observable::deleteObserver(moduru::observer::Observer* o) {
 		}
 		counter++;
 	}
-}
-
-void Observable::deleteObservers()
-{
-	observers.clear();
 }
